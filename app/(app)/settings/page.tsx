@@ -25,6 +25,27 @@ export default function SettingsPage() {
   const [telegramChatId, setTelegramChatId] = useState('')
   const [saving, setSaving] = useState(false)
 
+  const saveTelegramChatId = async () => {
+    setSaving(true)
+    await fetch('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ telegram_chat_id: telegramChatId }),
+    })
+    setSaving(false)
+  }
+
+  const saveAutonomyLevel = async () => {
+    setSaving(true)
+    await fetch('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ autonomy_level: autonomyLevel }),
+    })
+    setSaving(false)
+    alert('Nivel de autonomía guardado')
+  }
+
   const connectCalendar = async () => {
     const res = await fetch('/api/calendar/auth')
     const { url } = await res.json()
@@ -109,7 +130,7 @@ export default function SettingsPage() {
                   value={telegramChatId}
                   onChange={(e) => setTelegramChatId(e.target.value)}
                 />
-                <Button variant="outline" size="sm">Guardar</Button>
+                <Button variant="outline" size="sm" onClick={saveTelegramChatId} disabled={saving}>Guardar</Button>
               </div>
               <p className="text-xs text-zinc-600 mt-1.5">
                 Obtén tu Chat ID enviando /start a @userinfobot en Telegram
@@ -168,7 +189,7 @@ export default function SettingsPage() {
                 </button>
               ))}
             </div>
-            <Button className="w-full mt-4">Guardar nivel de autonomía</Button>
+            <Button className="w-full mt-4" onClick={saveAutonomyLevel} disabled={saving}>Guardar nivel de autonomía</Button>
           </CardContent>
         </Card>
 

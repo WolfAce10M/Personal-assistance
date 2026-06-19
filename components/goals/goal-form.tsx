@@ -72,8 +72,8 @@ export function GoalForm({ open, onOpenChange, goal, parentGoals = [], onSave }:
         body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error('Error al guardar el objetivo')
-      const saved: Goal = await res.json()
-      onSave(saved)
+      const data = await res.json()
+      onSave(data.goal)
       onOpenChange(false)
       if (!goal) setForm({ ...defaultForm })
     } catch (err) {

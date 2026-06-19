@@ -39,8 +39,8 @@ export default function TasksPage() {
     try {
       const res = await fetch('/api/tasks')
       if (res.ok) {
-        const data: Task[] = await res.json()
-        setTasks(data)
+        const data = await res.json()
+        setTasks(data.tasks ?? [])
       }
     } finally {
       setLoading(false)

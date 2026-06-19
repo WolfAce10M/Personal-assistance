@@ -52,7 +52,12 @@ Responde SOLO con JSON válido en este formato:
     response_format: { type: 'json_object' },
   })
 
-  const planData = JSON.parse(completion.choices[0]?.message?.content ?? '{}')
+  let planData: Record<string, unknown> = {}
+  try {
+    planData = JSON.parse(completion.choices[0]?.message?.content ?? '{}')
+  } catch {
+    return NextResponse.json({ error: 'Error al parsear el plan de IA' }, { status: 500 })
+  }
 
   const supabase = await createClient()
 
@@ -73,10 +78,10 @@ Responde SOLO con JSON válido en este formato:
   if (!plan) return NextResponse.json({ error: 'Error creating plan' }, { status: 500 })
 
   // Create sessions for first week
-  const sessions = (planData.sessions ?? []).map((s: {
+  const sessions = ((planData.sessions as Array<{
     name: string; type: string; day_of_week: number;
     duration_minutes: number; exercises: unknown[]
-  }) => ({
+  }>) ?? []).map((s) => ({
     plan_id: plan.id,
     name: s.name,
     type: s.type,

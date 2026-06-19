@@ -29,10 +29,10 @@ export default function AssistantPage() {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const res = await fetch('/api/ai/chat/history?limit=50')
+      const res = await fetch('/api/ai/chat?limit=50&channel=web')
       if (res.ok) {
-        const data: ChatMessage[] = await res.json()
-        setMessages(data)
+        const data = await res.json()
+        setMessages(data.messages ?? [])
       }
     } catch {
       setIsConnected(false)
@@ -121,7 +121,7 @@ export default function AssistantPage() {
         const assistantMessage: ChatMessage = {
           id: data.id ?? `assistant-${Date.now()}`,
           role: 'assistant',
-          content: data.content ?? data.message ?? 'Lo siento, no pude procesar tu mensaje.',
+          content: data.reply ?? data.content ?? 'Lo siento, no pude procesar tu mensaje.',
           channel: 'web',
           metadata: data.metadata ?? {},
           created_at: data.created_at ?? new Date().toISOString(),

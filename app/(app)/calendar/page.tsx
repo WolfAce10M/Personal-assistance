@@ -28,12 +28,11 @@ export default function CalendarPage() {
   const fetchEvents = useCallback(async () => {
     setLoading(true)
     try {
-      const start = weekStart.toISOString()
-      const end = addDays(weekStart, 7).toISOString()
-      const res = await fetch(`/api/calendar/events?start=${start}&end=${end}`)
+      const res = await fetch(`/api/calendar?days=14`)
       if (res.ok) {
-        const data: CalendarEvent[] = await res.json()
-        setEvents(data)
+        const data = await res.json()
+        setEvents(data.events ?? [])
+        setGoogleConnected(data.connected ?? false)
       }
     } finally {
       setLoading(false)
@@ -83,7 +82,7 @@ export default function CalendarPage() {
         subtitle="Tu agenda y eventos"
         actions={
           !googleConnected ? (
-            <Button size="sm" variant="outline" onClick={() => window.open('/api/auth/google', '_blank')}>
+            <Button size="sm" variant="outline" onClick={() => fetch('/api/calendar/auth').then(r => r.json()).then(d => { window.location.href = d.url })}>
               <CalendarDays className="h-4 w-4" />
               Conectar Google Calendar
             </Button>
@@ -106,7 +105,7 @@ export default function CalendarPage() {
                 Sincroniza tus eventos y deja que la IA organice tu tiempo automáticamente.
               </p>
             </div>
-            <Button size="sm" onClick={() => window.open('/api/auth/google', '_blank')}>
+            <Button size="sm" onClick={() => fetch('/api/calendar/auth').then(r => r.json()).then(d => { window.location.href = d.url })}>
               Conectar
             </Button>
           </div>

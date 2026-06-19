@@ -30,8 +30,8 @@ export default function PersonalDevPage() {
     try {
       const res = await fetch('/api/personal-dev')
       if (res.ok) {
-        const data: PersonalDevEntry[] = await res.json()
-        setEntries(data)
+        const data = await res.json()
+        setEntries(data.entries ?? [])
       }
     } finally {
       setLoading(false)

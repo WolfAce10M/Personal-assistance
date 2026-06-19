@@ -60,8 +60,8 @@ export function GoalCard({ goal, allGoals = [], onUpdate, onDelete }: GoalCardPr
       body: JSON.stringify({ status: next }),
     })
     if (res.ok) {
-      const updated: Goal = await res.json()
-      onUpdate(updated)
+      const data = await res.json()
+      onUpdate(data.goal)
     }
   }
 

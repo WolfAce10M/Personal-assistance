@@ -27,8 +27,8 @@ export default function GoalsPage() {
     try {
       const res = await fetch('/api/goals')
       if (res.ok) {
-        const data: Goal[] = await res.json()
-        setGoals(data)
+        const data = await res.json()
+        setGoals(data.goals ?? [])
       }
     } finally {
       setLoading(false)

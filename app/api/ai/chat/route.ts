@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     supabase.from('tasks').select('title,priority,status,due_date').neq('status', 'completed').limit(10),
     supabase.from('goals').select('title,type,progress,status').eq('status', 'active').limit(5),
     supabase.from('calendar_events').select('title,start_time,end_time,is_protected').gte('start_time', new Date().toISOString()).limit(5),
-    supabase.from('training_sessions').select('name,scheduled_date,status,exercises').eq('scheduled_date', today).single(),
+    supabase.from('training_sessions').select('name,scheduled_date,status,exercises').eq('scheduled_date', today).maybeSingle(),
     supabase.from('chat_messages').select('role,content').order('created_at', { ascending: false }).limit(10),
     supabase.from('ai_memory').select('category,key,value').limit(20),
   ])

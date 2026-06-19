@@ -61,8 +61,8 @@ export function DevEntryCard({ entry, onUpdate, onDelete }: DevEntryCardProps) {
         }),
       })
       if (res.ok) {
-        const updated: PersonalDevEntry = await res.json()
-        onUpdate(updated)
+        const data = await res.json()
+        onUpdate(data.entry)
       }
     } finally {
       setCompleting(false)
@@ -76,8 +76,8 @@ export function DevEntryCard({ entry, onUpdate, onDelete }: DevEntryCardProps) {
       body: JSON.stringify({ progress: newProgress }),
     })
     if (res.ok) {
-      const updated: PersonalDevEntry = await res.json()
-      onUpdate(updated)
+      const data = await res.json()
+      onUpdate(data.entry)
     }
   }
 

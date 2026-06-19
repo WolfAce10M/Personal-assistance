@@ -75,8 +75,8 @@ export function TaskForm({ open, onOpenChange, task, onSave }: TaskFormProps) {
         body: JSON.stringify(payload),
       })
       if (!res.ok) throw new Error('Error al guardar la tarea')
-      const saved: Task = await res.json()
-      onSave(saved)
+      const data = await res.json()
+      onSave(data.task)
       onOpenChange(false)
       if (!task) {
         setForm({ ...defaultForm })

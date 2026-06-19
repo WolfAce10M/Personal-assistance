@@ -36,8 +36,8 @@ export function TaskCard({ task, onUpdate }: TaskCardProps) {
         body: JSON.stringify({ status: newStatus }),
       })
       if (res.ok) {
-        const updated: Task = await res.json()
-        onUpdate(updated)
+        const data = await res.json()
+        onUpdate(data.task)
       }
     } finally {
       setToggling(false)

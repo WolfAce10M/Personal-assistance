@@ -33,7 +33,7 @@ export function SessionCard({ session, onUpdate, isToday = false }: SessionCardP
     setLoading(action)
     try {
       const status = action === 'complete' ? 'completed' : 'skipped'
-      const res = await fetch(`/api/training/sessions/${session.id}`, {
+      const res = await fetch(`/api/training/${session.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -42,8 +42,8 @@ export function SessionCard({ session, onUpdate, isToday = false }: SessionCardP
         }),
       })
       if (res.ok) {
-        const updated: TrainingSession = await res.json()
-        onUpdate(updated)
+        const data = await res.json()
+        onUpdate(data.session)
       }
     } finally {
       setLoading(null)

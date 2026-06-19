@@ -25,10 +25,10 @@ export default function TrainingPage() {
   const fetchSessions = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/training/sessions')
+      const res = await fetch('/api/training')
       if (res.ok) {
-        const data: TrainingSession[] = await res.json()
-        setSessions(data)
+        const data = await res.json()
+        setSessions(data.sessions ?? [])
       }
     } finally {
       setLoading(false)
@@ -55,7 +55,7 @@ export default function TrainingPage() {
     try {
       const res = await fetch('/api/ai/training-plan', { method: 'POST' })
       const data = await res.json()
-      setPlanMessage(data.message ?? 'Plan creado correctamente')
+      setPlanMessage(data.plan ? `Plan "${data.plan.name}" creado con ${data.sessions?.length ?? 0} sesiones` : 'Plan creado correctamente')
       await fetchSessions()
     } catch {
       setPlanMessage('Error al crear el plan. Inténtalo de nuevo.')

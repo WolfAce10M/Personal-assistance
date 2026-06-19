@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const { data: profile } = await supabase
     .from('profiles')
     .select('google_tokens')
-    .single()
+    .maybeSingle()
 
   if (!profile?.google_tokens) {
     // Return cached events from DB

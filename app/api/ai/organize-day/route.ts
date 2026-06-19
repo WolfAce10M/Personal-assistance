@@ -21,7 +21,7 @@ export async function POST() {
     supabase.from('tasks').select('*').in('status', ['pending', 'in_progress']).order('priority').limit(20),
     supabase.from('goals').select('*').eq('status', 'active').limit(10),
     supabase.from('calendar_events').select('*').gte('start_time', startOfToday).lte('start_time', endOfToday).order('start_time'),
-    supabase.from('training_sessions').select('*').eq('scheduled_date', today).single(),
+    supabase.from('training_sessions').select('*').eq('scheduled_date', today).maybeSingle(),
     supabase.from('personal_dev_entries').select('*').eq('status', 'active').limit(5),
   ])
 
@@ -40,7 +40,7 @@ OBJETIVOS ACTIVOS:
 ${JSON.stringify(goals ?? [], null, 2)}
 
 ENTRENAMIENTO HOY:
-${JSON.stringify(training?.data ?? 'No programado', null, 2)}
+${JSON.stringify(training ?? 'No programado', null, 2)}
 
 DESARROLLO PERSONAL ACTIVO:
 ${JSON.stringify(personalDev ?? [], null, 2)}

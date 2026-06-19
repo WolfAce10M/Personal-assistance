@@ -51,13 +51,14 @@ export function ExerciseLog({ sessionId, exercises: initial, onSave }: ExerciseL
     setSaving(true)
     try {
       const valid = exercises.filter(e => e.name.trim())
-      const res = await fetch(`/api/training/sessions/${sessionId}`, {
+      const res = await fetch(`/api/training/${sessionId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ exercises: valid }),
       })
       if (res.ok) {
-        onSave(valid)
+        const data = await res.json()
+        onSave(data.session?.exercises ?? valid)
         setSaved(true)
       }
     } finally {

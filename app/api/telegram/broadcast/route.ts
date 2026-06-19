@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const { data: profile } = await supabase
     .from('profiles')
     .select('telegram_chat_id')
-    .single()
+    .maybeSingle()
 
   if (!profile?.telegram_chat_id) {
     return NextResponse.json({ error: 'No Telegram chat ID configured' }, { status: 400 })
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const [{ data: tasks }, { data: events }, { data: training }] = await Promise.all([
       supabase.from('tasks').select('title').neq('status', 'completed').in('priority', ['urgent', 'high']).limit(5),
       supabase.from('calendar_events').select('title,start_time').gte('start_time', new Date().toISOString()).limit(1),
-      supabase.from('training_sessions').select('name').eq('scheduled_date', format(new Date(), 'yyyy-MM-dd')).single(),
+      supabase.from('training_sessions').select('name').eq('scheduled_date', format(new Date(), 'yyyy-MM-dd')).maybeSingle(),
     ])
 
     await sendDailyBriefing(profile.telegram_chat_id, {
