@@ -1,16 +1,16 @@
 import { google } from 'googleapis'
 import { CalendarEvent } from '@/types'
 
-export function getOAuthClient() {
+export function getOAuthClient(redirectUri?: string) {
   return new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_REDIRECT_URI
+    redirectUri ?? process.env.GOOGLE_REDIRECT_URI
   )
 }
 
-export function getAuthUrl() {
-  const oauth2Client = getOAuthClient()
+export function getAuthUrl(redirectUri: string) {
+  const oauth2Client = getOAuthClient(redirectUri)
   return oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: [

@@ -11,7 +11,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const oauth2Client = getOAuthClient()
+    const origin = new URL(req.url).origin
+    const redirectUri = `${origin}/api/calendar/callback`
+    const oauth2Client = getOAuthClient(redirectUri)
     const { tokens } = await oauth2Client.getToken(code)
 
     const supabase = await createClient()
