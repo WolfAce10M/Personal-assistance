@@ -11,8 +11,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const origin = new URL(req.url).origin
-    const redirectUri = `${origin}/api/calendar/callback`
+    const host = req.headers.get('x-forwarded-host') || req.headers.get('host') || new URL(req.url).host
+    const proto = req.headers.get('x-forwarded-proto') || 'https'
+    const redirectUri = `${proto}://${host}/api/calendar/callback`
     const oauth2Client = getOAuthClient(redirectUri)
     const { tokens } = await oauth2Client.getToken(code)
 
