@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const { tokens } = await oauth2Client.getToken(code)
 
     const supabase = await createClient()
-    const { data: existing } = await supabase.from('profiles').select('id').single()
+    const { data: existing } = await supabase.from('profiles').select('id').maybeSingle()
 
     if (existing) {
       await supabase.from('profiles').update({ google_tokens: tokens }).eq('id', existing.id)
