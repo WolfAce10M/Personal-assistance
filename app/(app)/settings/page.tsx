@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
   Calendar, Bot, Zap, MessageSquare, Shield,
-  ExternalLink, CheckCircle2, AlertCircle
+  ExternalLink, CheckCircle2, AlertCircle, BookOpen
 } from 'lucide-react'
 
 const autonomyDescriptions = [
@@ -23,6 +23,8 @@ export default function SettingsPage() {
   const [autonomyLevel, setAutonomyLevel] = useState(1)
   const [calendarConnected, setCalendarConnected] = useState(false)
   const [telegramChatId, setTelegramChatId] = useState('')
+  const [notionConnected, setNotionConnected] = useState(false)
+  const [notionSettingUp, setNotionSettingUp] = useState(false)
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState('')
 
@@ -33,6 +35,9 @@ export default function SettingsPage() {
         if (data.profile.autonomy_level) setAutonomyLevel(data.profile.autonomy_level)
       }
     })
+    fetch('/api/notion/setup').then(r => r.json()).then(data => {
+      setNotionConnected(data.connected === true)
+    }).catch(() => {})
   }, [])
 
   const showToast = (msg: string) => {
@@ -69,6 +74,24 @@ export default function SettingsPage() {
     const res = await fetch('/api/calendar/auth')
     const { url } = await res.json()
     window.location.href = url
+  }
+
+  const setupNotion = async () => {
+    setNotionSettingUp(true)
+    try {
+      const res = await fetch('/api/notion/setup', { method: 'POST' })
+      const data = await res.json()
+      if (data.ok) {
+        setNotionConnected(true)
+        showToast('Notion configurado correctamente')
+      } else {
+        showToast(`Error: ${data.error}`)
+      }
+    } catch {
+      showToast('Error al configurar Notion')
+    } finally {
+      setNotionSettingUp(false)
+    }
   }
 
   const setupTelegramWebhook = async () => {
@@ -245,6 +268,70 @@ export default function SettingsPage() {
                 </label>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        {/* Notion */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-lg bg-stone-600/20 flex items-center justify-center">
+                <BookOpen className="h-4 w-4 text-stone-400" />
+              </div>
+              <div>
+                <CardTitle>Notion</CardTitle>
+                <CardDescription>CRM, briefings y notas en tu workspace de Notion</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              {notionConnected ? (
+                <div className="flex items-center gap-2 text-sm text-green-400">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Workspace configurado
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-sm text-zinc-500">
+                  <AlertCircle className="h-4 w-4" />
+                  No configurado
+                </div>
+              )}
+              <Button
+                onClick={setupNotion}
+                disabled={notionSettingUp}
+                variant={notionConnected ? 'outline' : 'default'}
+                className="w-full sm:w-auto"
+              >
+                {notionSettingUp ? 'Configurando...' : notionConnected ? 'Reconfigurar workspace' : 'Configurar workspace'}
+              </Button>
+            </div>
+            {notionConnected && (
+              <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 space-y-1.5">
+                <p className="text-xs font-medium text-zinc-300">Páginas creadas en Notion:</p>
+                {['📋 CRM — Contactos y Deals', '☀️ Briefings Diarios', '📝 Notas', '✅ Tareas', '🎯 Objetivos'].map(item => (
+                  <div key={item} className="flex items-center gap-2 text-xs text-zinc-500">
+                    <CheckCircle2 className="h-3 w-3 text-green-500 flex-shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+              <p className="text-xs font-medium text-zinc-300 mb-1.5">Comandos desde Telegram:</p>
+              <div className="space-y-1">
+                {[
+                  ['"Guarda esto en Notion: [texto]"', 'Crea una nota'],
+                  ['"Añade al CRM: [nombre], empresa: [empresa]"', 'Añade contacto'],
+                  ['"Genera el briefing en Notion"', 'Crea briefing del día'],
+                ].map(([cmd, desc]) => (
+                  <div key={cmd} className="text-xs">
+                    <span className="text-indigo-400 font-mono">{cmd}</span>
+                    <span className="text-zinc-500"> → {desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
 
