@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Header } from '@/components/layout/header'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -25,6 +25,15 @@ export default function SettingsPage() {
   const [telegramChatId, setTelegramChatId] = useState('')
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState('')
+
+  useEffect(() => {
+    fetch('/api/profile').then(r => r.json()).then(data => {
+      if (data.profile) {
+        if (data.profile.telegram_chat_id) setTelegramChatId(data.profile.telegram_chat_id)
+        if (data.profile.autonomy_level) setAutonomyLevel(data.profile.autonomy_level)
+      }
+    })
+  }, [])
 
   const showToast = (msg: string) => {
     setToast(msg)
