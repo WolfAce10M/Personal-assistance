@@ -11,7 +11,28 @@ export async function POST(req: NextRequest) {
     if (!message?.text) return NextResponse.json({ ok: true })
 
     const chatId = message.chat.id
-    const text = message.text
+    let text = message.text
+
+    // Transcribe voice messages with Whisper
+    if (!text && message.voice) {
+      try {
+        const token = process.env.TELEGRAM_BOT_TOKEN!
+        const fileInfo = await fetch(`https://api.telegram.org/bot${token}/getFile?file_id=${message.voice.file_id}`).then(r => r.json())
+        const filePath = fileInfo.result?.file_path
+        if (filePath) {
+          const audioRes = await fetch(`https://api.telegram.org/file/bot${token}/${filePath}`)
+          const audioBuffer = await audioRes.arrayBuffer()
+          const audioFile = new File([audioBuffer], 'voice.ogg', { type: 'audio/ogg' })
+          const { getOpenAI } = await import('@/lib/openai/client')
+          const transcription = await getOpenAI().audio.transcriptions.create({ file: audioFile, model: 'whisper-1', language: 'es' })
+          text = transcription.text
+        }
+      } catch (err) {
+        console.error('Whisper transcription error:', err)
+      }
+    }
+
+    if (!text) return NextResponse.json({ ok: true })
 
     let context = { fecha: format(new Date(), "EEEE, d 'de' MMMM HH:mm", { locale: es }) }
 
