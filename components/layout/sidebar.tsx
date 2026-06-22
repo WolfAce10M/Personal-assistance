@@ -29,13 +29,13 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-16 md:w-56 flex flex-col border-r border-zinc-800 bg-zinc-950 z-40">
+    <aside className="hidden md:flex fixed left-0 top-0 h-screen w-56 flex-col border-r border-zinc-800 bg-zinc-950 z-40">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-3 md:px-4 py-5 border-b border-zinc-800">
+      <div className="flex items-center gap-3 px-4 py-5 border-b border-zinc-800">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 shrink-0">
           <Zap className="h-4 w-4 text-white" />
         </div>
-        <div className="hidden md:block">
+        <div>
           <p className="text-sm font-semibold text-zinc-100">POS</p>
           <p className="text-xs text-zinc-500">Personal OS</p>
         </div>
@@ -58,7 +58,7 @@ export function Sidebar() {
                   )}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
-                  <span className="hidden md:block">{label}</span>
+                  <span>{label}</span>
                 </Link>
               </li>
             )
@@ -73,7 +73,7 @@ export function Sidebar() {
           className="flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 transition-colors"
         >
           <Settings className="h-4 w-4 shrink-0" />
-          <span className="hidden md:block">Ajustes</span>
+          <span>Ajustes</span>
         </Link>
       </div>
     </aside>

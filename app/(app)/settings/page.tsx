@@ -88,7 +88,7 @@ export default function SettingsPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               {calendarConnected ? (
                 <div className="flex items-center gap-2 text-sm text-green-400">
                   <CheckCircle2 className="h-4 w-4" />
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                   No conectado
                 </div>
               )}
-              <Button onClick={connectCalendar} variant={calendarConnected ? 'outline' : 'default'}>
+              <Button onClick={connectCalendar} variant={calendarConnected ? 'outline' : 'default'} className="w-full sm:w-auto">
                 <ExternalLink className="h-4 w-4 mr-2" />
                 {calendarConnected ? 'Reconectar' : 'Conectar Google Calendar'}
               </Button>
@@ -137,16 +137,16 @@ export default function SettingsPage() {
               </p>
             </div>
             <Separator />
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2">
               <div>
                 <p className="text-sm font-medium text-zinc-100">Webhook del bot</p>
                 <p className="text-xs text-zinc-500">Configura para recibir mensajes</p>
               </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={setupTelegramWebhook}>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button variant="outline" size="sm" onClick={setupTelegramWebhook} className="w-full sm:w-auto">
                   Configurar webhook
                 </Button>
-                <Button variant="outline" size="sm" onClick={sendTestBriefing} disabled={saving}>
+                <Button variant="outline" size="sm" onClick={sendTestBriefing} disabled={saving} className="w-full sm:w-auto">
                   Enviar briefing test
                 </Button>
               </div>
