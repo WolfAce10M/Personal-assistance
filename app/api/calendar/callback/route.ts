@@ -21,17 +21,20 @@ export async function GET(req: NextRequest) {
     const { data: existing } = await supabase.from('profiles').select('id').maybeSingle()
 
     if (existing) {
-      await supabase.from('profiles').update({ google_tokens: tokens }).eq('id', existing.id)
+      const { error } = await supabase.from('profiles').update({ google_tokens: tokens }).eq('id', existing.id)
+      if (error) throw new Error(`Update failed: ${error.message}`)
     } else {
-      await supabase.from('profiles').insert({
+      const { error } = await supabase.from('profiles').insert({
         email: 'user@pos.app',
         google_tokens: tokens,
       })
+      if (error) throw new Error(`Insert failed: ${error.message}`)
     }
 
     return NextResponse.redirect(new URL('/calendar?connected=true', req.url))
   } catch (err) {
-    console.error('OAuth callback error:', err)
-    return NextResponse.redirect(new URL('/calendar?error=oauth_failed', req.url))
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('OAuth callback error:', msg)
+    return NextResponse.redirect(new URL(`/calendar?error=${encodeURIComponent(msg)}`, req.url))
   }
 }
