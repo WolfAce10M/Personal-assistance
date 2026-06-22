@@ -24,26 +24,36 @@ export default function SettingsPage() {
   const [calendarConnected, setCalendarConnected] = useState(false)
   const [telegramChatId, setTelegramChatId] = useState('')
   const [saving, setSaving] = useState(false)
+  const [toast, setToast] = useState('')
+
+  const showToast = (msg: string) => {
+    setToast(msg)
+    setTimeout(() => setToast(''), 3000)
+  }
 
   const saveTelegramChatId = async () => {
+    if (!telegramChatId.trim()) return showToast('Escribe tu Chat ID primero')
     setSaving(true)
-    await fetch('/api/profile', {
+    const res = await fetch('/api/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ telegram_chat_id: telegramChatId }),
     })
     setSaving(false)
+    if (res.ok) showToast('Chat ID guardado correctamente')
+    else showToast('Error al guardar. Inténtalo de nuevo.')
   }
 
   const saveAutonomyLevel = async () => {
     setSaving(true)
-    await fetch('/api/profile', {
+    const res = await fetch('/api/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ autonomy_level: autonomyLevel }),
     })
     setSaving(false)
-    alert('Nivel de autonomía guardado')
+    if (res.ok) showToast('Nivel de autonomía guardado')
+    else showToast('Error al guardar')
   }
 
   const connectCalendar = async () => {
@@ -72,6 +82,11 @@ export default function SettingsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header title="Ajustes" />
+      {toast && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-sm text-zinc-100 shadow-lg">
+          {toast}
+        </div>
+      )}
       <div className="flex-1 p-4 md:p-6 max-w-2xl mx-auto w-full space-y-6">
 
         {/* Google Calendar */}
