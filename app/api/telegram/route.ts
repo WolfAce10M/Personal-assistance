@@ -59,8 +59,8 @@ export async function POST(req: NextRequest) {
 
     if (!text) return NextResponse.json({ ok: true })
 
-    // Detect if user wants a voice reply
-    const wantsVoice = isVoiceMessage || VOICE_KEYWORDS.some(kw => text.toLowerCase().includes(kw))
+    // Detect if user wants a voice reply (only when explicitly requested)
+    const wantsVoice = VOICE_KEYWORDS.some(kw => text.toLowerCase().includes(kw))
 
     let context = { fecha: format(new Date(), "EEEE, d 'de' MMMM HH:mm", { locale: es }) }
 
