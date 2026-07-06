@@ -10,6 +10,7 @@ import {
   BookOpen,
   Target,
   MessageSquare,
+  Building2,
   Settings,
   Zap,
 } from 'lucide-react'
@@ -23,6 +24,7 @@ const nav = [
   { href: '/personal-dev', icon: BookOpen, label: 'Desarrollo' },
   { href: '/goals', icon: Target, label: 'Objetivos' },
   { href: '/assistant', icon: MessageSquare, label: 'Asistente' },
+  { href: '/company', icon: Building2, label: 'Empresa' },
 ]
 
 export function Sidebar() {

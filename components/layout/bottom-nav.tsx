@@ -6,7 +6,7 @@ import {
   LayoutDashboard,
   CheckSquare,
   Calendar,
-  Target,
+  Building2,
   MessageSquare,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -15,7 +15,7 @@ const nav = [
   { href: '/', icon: LayoutDashboard, label: 'Inicio' },
   { href: '/tasks', icon: CheckSquare, label: 'Tareas' },
   { href: '/calendar', icon: Calendar, label: 'Agenda' },
-  { href: '/goals', icon: Target, label: 'Metas' },
+  { href: '/company', icon: Building2, label: 'Empresa' },
   { href: '/assistant', icon: MessageSquare, label: 'IA' },
 ]
 
