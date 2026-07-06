@@ -3,8 +3,9 @@ import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { runMission } from '@/lib/agents/engine'
 
-// Las misiones pueden tardar varios minutos (varios modelos en paralelo)
-export const maxDuration = 800
+// Las misiones pueden tardar varios minutos (varios modelos en paralelo).
+// 300s es el máximo del plan Hobby de Vercel; en Pro puede subirse a 800.
+export const maxDuration = 300
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
