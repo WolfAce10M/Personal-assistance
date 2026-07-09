@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a33"/>
+      <stop offset="1" stop-color="#ec5f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0a0d10"/>
+  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="url(#g)" stroke-width="1.5" opacity="0.35"/>
+  <!-- estela / olas -->
+  <path d="M8 42c6 0 6-5 12-5s6 5 12 5 6-5 12-5 6 5 12 5" fill="none" stroke="#e4b578" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <!-- silueta de moto de agua simplificada -->
+  <path d="M12 34c4-10 14-15 26-15 6 0 12 2 16 6-3 1-7 2-12 2-2 3-6 5-11 5-7 0-13-1-19-3z" fill="url(#g)"/>
+  <circle cx="40" cy="22" r="3.4" fill="#0a0d10"/>
+</svg>

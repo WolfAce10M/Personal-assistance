@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+
+/* Fuentes self-hosted (sin llamadas a Google) — mejor rendimiento y privacidad */
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/inter';
+
+/* ============================================================
+   SISTEMA DE DISEÑO — Costa Brava Rent Jet Ski
+   Colores extraídos del logo: negro / naranja / arena-dorado
+   ============================================================ */
+@theme {
+  /* Marca */
+  --color-brand-orange: #ec5f1a; /* naranja "RENT JET SKI" */
+  --color-brand-orange-bright: #ff6f2c;
+  --color-brand-sand: #e4b578; /* dorado del contorno de la moto */
+  --color-brand-sand-soft: #f0d3a8;
+
+  /* Escala de neutros (océano nocturno) */
+  --color-ink-950: #060809;
+  --color-ink-900: #0a0d10;
+  --color-ink-850: #0f1418;
+  --color-ink-800: #141b21;
+  --color-ink-700: #1e2830;
+  --color-ink-600: #2b3843;
+  --color-ink-500: #485864;
+
+  /* Azul mar (acento frío para contrastar con el naranja) */
+  --color-sea-400: #35c7e0;
+  --color-sea-500: #14a3c4;
+  --color-sea-900: #06202b;
+
+  /* Tipografía */
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Curvas de animación tipo Apple */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  /* Lenis gestiona el scroll suave; desactivamos el nativo para evitar conflicto */
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--color-ink-950);
+  color: #eef2f4;
+  font-family: var(--font-body);
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Lenis: mientras está activo controla el scroll de <html> */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+/* Selección de texto con color de marca */
+::selection {
+  background: var(--color-brand-orange);
+  color: #fff;
+}
+
+/* Foco accesible */
+:focus-visible {
+  outline: 2px solid var(--color-brand-orange-bright);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   UTILIDADES DE ANIMACIÓN (dosificadas + accesibles)
+   Los elementos con [data-reveal] empiezan ocultos y GSAP los
+   revela. Si JS no carga o el usuario prefiere menos movimiento,
+   se muestran igualmente (progressive enhancement).
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  will-change: transform, opacity;
+}
+
+/* Si no hay JS: mostramos todo (la clase la pone el script al iniciar) */
+html:not(.gsap-ready) [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Respeto absoluto por accesibilidad: sin animaciones */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Degradado de texto de marca reutilizable */
+.text-gradient-brand {
+  background: linear-gradient(100deg, var(--color-brand-sand-soft) 0%, var(--color-brand-orange-bright) 55%, var(--color-brand-orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Contenedor estándar */
+.container-x {
+  width: 100%;
+  max-width: 80rem; /* 1280px */
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 2rem;
+  }
+}
+
+/* Ocultar barra de scroll en carruseles horizontales manteniendo el scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

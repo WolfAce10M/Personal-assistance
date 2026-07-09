@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Hero from './sections/Hero.astro';
+import Experience from './sections/Experience.astro';
+import Showcase from './sections/Showcase.astro';
+import Fleet from './sections/Fleet.astro';
+import Routes from './sections/Routes.astro';
+import Howto from './sections/Howto.astro';
+import Pricing from './sections/Pricing.astro';
+import Faq from './sections/Faq.astro';
+import CtaBand from './sections/CtaBand.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// SEO por idioma
+const titles: Record<Lang, string> = {
+  es: 'Costa Brava Rent Jet Ski · Alquiler de motos de agua en Roses y Empuriabrava',
+  ca: 'Costa Brava Rent Jet Ski · Lloguer de motos d’aigua a Roses i Empuriabrava',
+  fr: 'Costa Brava Rent Jet Ski · Location de jet-ski à Roses et Empuriabrava',
+  en: 'Costa Brava Rent Jet Ski · Jet ski rental in Roses & Empuriabrava',
+};
+const descriptions: Record<Lang, string> = {
+  es: 'Alquila motos de agua Sea-Doo en la Bahía de Roses, Costa Brava. Con o sin licencia, rutas guiadas a Cadaqués y Cap de Creus. A 5 minutos del mar. Reserva ya.',
+  ca: 'Lloga motos d’aigua Sea-Doo a la Badia de Roses, Costa Brava. Amb o sense llicència, rutes guiades a Cadaqués i Cap de Creus. A 5 minuts del mar. Reserva ja.',
+  fr: 'Louez des jet-skis Sea-Doo dans la Baie de Roses, Costa Brava. Avec ou sans permis, circuits guidés vers Cadaqués et Cap de Creus. À 5 min de la mer.',
+  en: 'Rent Sea-Doo jet skis in the Bay of Roses, Costa Brava. With or without a licence, guided routes to Cadaqués and Cap de Creus. 5 minutes from the sea.',
+};
+---
+
+<Layout lang={lang} title={titles[lang]} description={descriptions[lang]} path="">
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <Experience lang={lang} />
+    <Showcase lang={lang} />
+    <Fleet lang={lang} />
+    <Routes lang={lang} />
+    <Howto lang={lang} />
+    <Pricing lang={lang} />
+    <Faq lang={lang} />
+    <CtaBand lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

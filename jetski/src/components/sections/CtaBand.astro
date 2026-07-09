@@ -1,0 +1,45 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, type Lang } from '../../i18n/utils';
+import { whatsappLink, SITE } from '../../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const waMsg = whatsappLink(t('common.whatsapp.msg'));
+---
+
+<section class="relative py-20 md:py-28">
+  <div class="container-x">
+    <div class="relative overflow-hidden rounded-[2rem] border border-brand-orange/20 px-6 py-14 md:px-16 md:py-20 text-center">
+      <!-- fondo -->
+      <div class="absolute inset-0 -z-10 bg-gradient-to-br from-sea-900 via-ink-900 to-ink-950"></div>
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(80%_120%_at_50%_0%,rgba(236,95,26,0.22),transparent_60%)]"></div>
+
+      <h2 data-reveal class="text-4xl md:text-6xl font-black text-white">{t('cta.title')}</h2>
+      <p data-reveal data-reveal-delay="0.06" class="mt-5 max-w-xl mx-auto text-lg text-white/70">
+        {t('cta.text')}
+      </p>
+      <div data-reveal data-reveal-delay="0.12" class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a
+          href={waMsg}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2.5 rounded-full bg-brand-orange px-8 py-4 text-base font-semibold text-white shadow-[0_16px_40px_-10px_rgba(236,95,26,0.7)] transition-all duration-300 hover:bg-brand-orange-bright hover:-translate-y-0.5"
+        >
+          <Icon name="whatsapp" class="w-5 h-5" />
+          {t('cta.book')}
+        </a>
+        <a
+          href={`tel:${SITE.phonePrimary}`}
+          class="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 text-base font-semibold text-white transition-all duration-300 hover:border-white/50 hover:-translate-y-0.5"
+        >
+          <Icon name="phone" class="w-5 h-5" />
+          {t('cta.call')}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

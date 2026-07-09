@@ -1,0 +1,117 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, localizedPath, type Lang } from '../../i18n/utils';
+import { SITE } from '../../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const nav = [
+  { href: '#experiencia', label: t('nav.experience') },
+  { href: '#flota', label: t('nav.fleet') },
+  { href: '#rutas', label: t('nav.routes') },
+  { href: '#precios', label: t('nav.pricing') },
+  { href: '#faq', label: t('nav.faq') },
+];
+
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`
+)}`;
+---
+
+<footer class="relative border-t border-white/8 bg-ink-950 pt-16 pb-10">
+  <div class="container-x">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <!-- Marca -->
+      <div class="lg:col-span-1">
+        <img
+          src="/logo/logo-trimmed.png"
+          alt="Costa Brava Rent Jet Ski — Alquiler de motos acuáticas"
+          class="h-24 w-auto rounded-xl"
+          width="147"
+          height="96"
+          loading="lazy"
+        />
+        <p class="mt-4 max-w-xs text-sm text-white/55 leading-relaxed">{t('footer.tagline')}</p>
+        <div class="mt-5 flex items-center gap-3">
+          <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:border-brand-orange hover:text-brand-orange">
+            <Icon name="instagram" class="w-5 h-5" />
+          </a>
+          <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:border-brand-orange hover:text-brand-orange">
+            <Icon name="facebook" class="w-5 h-5" />
+          </a>
+          <a href={SITE.social.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition-colors hover:border-brand-orange hover:text-brand-orange">
+            <Icon name="tiktok" class="w-5 h-5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Navegación -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-white/40">{t('footer.explore')}</h3>
+        <ul class="mt-4 space-y-2.5">
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href} class="text-sm text-white/70 hover:text-brand-orange transition-colors">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contacto (NAP) -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-white/40">{t('footer.contact')}</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li>
+            <a href={`tel:${SITE.phonePrimary}`} class="inline-flex items-center gap-2 text-white/75 hover:text-brand-orange transition-colors">
+              <Icon name="phone" class="w-4 h-4 text-brand-orange/80" />
+              {SITE.phonePrimaryDisplay}
+            </a>
+          </li>
+          <li>
+            <a href={`tel:${SITE.phoneSecondary}`} class="inline-flex items-center gap-2 text-white/75 hover:text-brand-orange transition-colors">
+              <Icon name="phone" class="w-4 h-4 text-brand-orange/80" />
+              {SITE.phoneSecondaryDisplay}
+            </a>
+          </li>
+          <li>
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-start gap-2 text-white/75 hover:text-brand-orange transition-colors">
+              <Icon name="pin" class="w-4 h-4 mt-0.5 text-brand-orange/80 shrink-0" />
+              <span>
+                {SITE.address.street}<br />
+                {SITE.address.postalCode} {SITE.address.city} ({SITE.address.region})
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mapa embed -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-white/40">{t('footer.location')}</h3>
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="mt-4 block rounded-2xl border border-white/10 overflow-hidden aspect-video bg-gradient-to-br from-sea-900 to-ink-900 relative group">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <Icon name="pin" class="w-10 h-10 text-brand-orange transition-transform group-hover:scale-110" />
+          </div>
+          <span class="absolute bottom-2 left-3 text-[11px] text-white/60">Roses · Girona</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
+      <p>© {year} {SITE.name}. {t('footer.rights')}</p>
+      <div class="flex items-center gap-5">
+        <a href={localizedPath(lang, 'privacidad')} class="hover:text-white/70 transition-colors">{t('footer.legal.privacy')}</a>
+        <a href={localizedPath(lang, 'condiciones')} class="hover:text-white/70 transition-colors">{t('footer.legal.terms')}</a>
+      </div>
+    </div>
+  </div>
+</footer>

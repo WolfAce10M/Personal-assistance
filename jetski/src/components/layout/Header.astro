@@ -1,0 +1,207 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, localizedPath, getAlternateLinks, type Lang } from '../../i18n/utils';
+import { whatsappLink } from '../../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const home = localizedPath(lang, '');
+const langs = getAlternateLinks('');
+const waMsg = whatsappLink(t('common.whatsapp.msg'));
+
+const nav = [
+  { href: '#experiencia', label: t('nav.experience') },
+  { href: '#flota', label: t('nav.fleet') },
+  { href: '#rutas', label: t('nav.routes') },
+  { href: '#precios', label: t('nav.pricing') },
+  { href: '#faq', label: t('nav.faq') },
+];
+---
+
+<header
+  data-header
+  class="fixed top-0 inset-x-0 z-50 transition-all duration-500 [&.is-scrolled]:bg-ink-950/80 [&.is-scrolled]:backdrop-blur-xl [&.is-scrolled]:border-b [&.is-scrolled]:border-white/8 [&.is-scrolled]:shadow-lg [&.is-scrolled]:shadow-black/30"
+>
+  <div class="container-x flex items-center justify-between h-16 md:h-20">
+    <!-- Logo (imagen oficial de marca) -->
+    <a href={home} class="shrink-0 transition-transform hover:scale-[1.03]" aria-label="Costa Brava Rent Jet Ski">
+      <img
+        src="/logo/logo-trimmed.png"
+        alt="Costa Brava Rent Jet Ski — Alquiler de motos acuáticas"
+        class="h-11 md:h-[3.25rem] w-auto rounded-md"
+        width="80"
+        height="52"
+        fetchpriority="high"
+      />
+    </a>
+
+    <!-- Nav desktop -->
+    <nav class="hidden lg:flex items-center gap-8" aria-label="Principal">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="relative text-sm font-medium text-white/75 hover:text-white transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-brand-orange after:transition-all hover:after:w-full"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <!-- Conmutador de idioma -->
+      <div class="relative group hidden sm:block" data-lang-switch>
+        <button
+          type="button"
+          class="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-lang-btn
+        >
+          <span class="uppercase">{lang}</span>
+          <Icon name="chevron" class="w-3.5 h-3.5 transition-transform group-data-[open]:rotate-180" />
+        </button>
+        <ul
+          class="absolute right-0 mt-2 min-w-[9rem] rounded-2xl border border-white/10 bg-ink-850/95 backdrop-blur-xl p-1.5 shadow-2xl shadow-black/50 opacity-0 invisible translate-y-1 transition-all duration-200 group-data-[open]:opacity-100 group-data-[open]:visible group-data-[open]:translate-y-0"
+          data-lang-menu
+        >
+          {
+            langs.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  hreflang={l.hreflang}
+                  class={`flex items-center justify-between rounded-xl px-3 py-2 text-sm transition-colors ${
+                    l.lang === lang ? 'text-brand-orange bg-white/5' : 'text-white/80 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {l.label}
+                  <span class="uppercase text-[10px] opacity-60">{l.lang}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- CTA reservar (WhatsApp por ahora; cambiar a sistema de reservas después) -->
+      <a
+        href={waMsg}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden sm:inline-flex items-center gap-2 rounded-full bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(236,95,26,0.6)] transition-all duration-300 hover:bg-brand-orange-bright hover:-translate-y-0.5"
+      >
+        <Icon name="whatsapp" class="w-4 h-4" />
+        {t('nav.book')}
+      </a>
+
+      <!-- Hamburguesa móvil -->
+      <button
+        type="button"
+        class="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full text-white hover:bg-white/5 transition-colors"
+        aria-label={t('nav.menu')}
+        aria-expanded="false"
+        data-menu-btn
+      >
+        <span class="relative block w-5 h-4">
+          <span class="absolute left-0 top-0 w-full h-0.5 bg-current transition-all duration-300 [[data-menu-open]_&]:top-1.5 [[data-menu-open]_&]:rotate-45"></span>
+          <span class="absolute left-0 top-1.5 w-full h-0.5 bg-current transition-all duration-300 [[data-menu-open]_&]:opacity-0"></span>
+          <span class="absolute left-0 top-3 w-full h-0.5 bg-current transition-all duration-300 [[data-menu-open]_&]:top-1.5 [[data-menu-open]_&]:-rotate-45"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú móvil -->
+  <div
+    class="lg:hidden fixed inset-0 top-16 z-40 bg-ink-950/97 backdrop-blur-xl opacity-0 invisible transition-all duration-300 [[data-menu-open]_&]:opacity-100 [[data-menu-open]_&]:visible"
+    data-mobile-menu
+  >
+    <nav class="container-x flex flex-col gap-1 pt-8" aria-label="Móvil">
+      {
+        nav.map((item, i) => (
+          <a
+            href={item.href}
+            class="py-4 text-2xl font-display font-bold text-white/90 border-b border-white/8 hover:text-brand-orange transition-colors"
+            data-mobile-link
+            style={`transition-delay:${i * 40}ms`}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={waMsg}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-brand-orange px-6 py-4 text-base font-semibold text-white"
+      >
+        <Icon name="whatsapp" class="w-5 h-5" />
+        {t('nav.book')}
+      </a>
+
+      <!-- Idiomas en móvil -->
+      <div class="mt-8 flex flex-wrap gap-2">
+        {
+          langs.map((l) => (
+            <a
+              href={l.href}
+              hreflang={l.hreflang}
+              class={`rounded-full px-4 py-2 text-sm border transition-colors ${
+                l.lang === lang
+                  ? 'border-brand-orange text-brand-orange'
+                  : 'border-white/15 text-white/70 hover:text-white'
+              }`}
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const menuBtn = document.querySelector('[data-menu-btn]');
+
+  // Menú móvil
+  menuBtn?.addEventListener('click', () => {
+    const open = header?.hasAttribute('data-menu-open');
+    if (open) {
+      header?.removeAttribute('data-menu-open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    } else {
+      header?.setAttribute('data-menu-open', '');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+  document.querySelectorAll('[data-mobile-link]').forEach((l) =>
+    l.addEventListener('click', () => {
+      header?.removeAttribute('data-menu-open');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    })
+  );
+
+  // Conmutador de idioma (click para abrir en táctil, hover en desktop vía CSS)
+  const langSwitch = document.querySelector('[data-lang-switch]');
+  const langBtn = document.querySelector('[data-lang-btn]');
+  langBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = langSwitch?.hasAttribute('data-open');
+    langSwitch?.toggleAttribute('data-open', !open);
+    langBtn.setAttribute('aria-expanded', String(!open));
+  });
+  document.addEventListener('click', () => {
+    langSwitch?.removeAttribute('data-open');
+    langBtn?.setAttribute('aria-expanded', 'false');
+  });
+</script>

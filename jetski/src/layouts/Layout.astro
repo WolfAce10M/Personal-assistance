@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+import { SITE } from '../data/site';
+import { PRICE_FROM } from '../data/fleet';
+import { ROUTES } from '../data/routes';
+import { getAlternateLinks, type Lang } from '../i18n/utils';
+import { DEFAULT_LANG } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** ruta lógica sin prefijo de idioma, p.ej. '' para la home */
+  path?: string;
+}
+
+const { lang, title, description, path = '' } = Astro.props;
+const alternates = getAlternateLinks(path);
+const canonical = new URL(alternates.find((a) => a.lang === lang)!.href, SITE.domain).href;
+const ogImage = new URL('/og/og-cover.jpg', SITE.domain).href;
+
+// hreflang: mapear ca→ca-ES, es→es-ES, etc. + x-default al español
+const hreflangMap: Record<Lang, string> = {
+  es: 'es-ES',
+  ca: 'ca-ES',
+  fr: 'fr-FR',
+  en: 'en',
+};
+
+// JSON-LD LocalBusiness para SEO local
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsActivityLocation',
+  '@id': `${SITE.domain}/#business`,
+  name: SITE.name,
+  description,
+  url: SITE.domain,
+  telephone: SITE.phonePrimaryDisplay,
+  image: ogImage,
+  priceRange: `€€ · desde ${Math.min(PRICE_FROM, ...ROUTES.map((r) => r.low))}€`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    postalCode: SITE.address.postalCode,
+    addressLocality: SITE.address.city,
+    addressRegion: SITE.address.region,
+    addressCountry: SITE.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.address.lat,
+    longitude: SITE.address.lng,
+  },
+  areaServed: ['Roses', 'Empuriabrava', 'Cadaqués', 'Cap de Creus', 'Costa Brava'],
+  sameAs: [SITE.social.instagram, SITE.social.facebook, SITE.social.tiktok],
+};
+---
+
+<!doctype html>
+<html lang={hreflangMap[lang]} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0a0d10" />
+
+    <!-- hreflang para SEO internacional -->
+    {
+      alternates.map((alt) => (
+        <link
+          rel="alternate"
+          hreflang={hreflangMap[alt.lang]}
+          href={new URL(alt.href, SITE.domain).href}
+        />
+      ))
+    }
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(getAlternateLinks(path).find((a) => a.lang === DEFAULT_LANG)!.href, SITE.domain).href}
+    />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={hreflangMap[lang].replace('-', '_')} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/animations.ts';
+    </script>
+  </body>
+</html>

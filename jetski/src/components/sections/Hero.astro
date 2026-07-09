@@ -1,0 +1,161 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, type Lang } from '../../i18n/utils';
+import { whatsappLink } from '../../data/site';
+import { PRICE_FROM, FLEET } from '../../data/fleet';
+import { ROUTES } from '../../data/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const waMsg = whatsappLink(t('common.whatsapp.msg'));
+const jetskiCount = FLEET.reduce((n, j) => n + j.units, 0);
+// Precio más bajo de TODO el negocio (rutas sin licencia incluidas) → 70€ Almadrava
+const priceFromGlobal = Math.min(PRICE_FROM, ...ROUTES.map((r) => r.low));
+
+const stats = [
+  { value: `${priceFromGlobal}€`, label: t('hero.stat.from') },
+  { value: String(jetskiCount), label: t('hero.stat.jetskis') },
+  { value: String(ROUTES.length), label: t('hero.stat.routes') },
+  { value: t('hero.stat.license.value'), label: t('hero.stat.license') },
+];
+---
+
+<section data-hero class="relative min-h-[100svh] flex items-center overflow-hidden">
+  <!-- ==========================================================
+       FONDO DEL HERO
+       Placeholder animado (mar nocturno). Para poner tu vídeo,
+       sustituye el bloque .hero-placeholder por:
+       <video data-hero-media class="absolute inset-0 w-full h-full object-cover"
+              autoplay muted loop playsinline poster="/images/hero-poster.jpg">
+         <source src="/videos/hero.webm" type="video/webm" />
+         <source src="/videos/hero.mp4" type="video/mp4" />
+       </video>
+       ========================================================== -->
+  <div data-hero-media class="absolute inset-0 will-change-transform">
+    <div class="hero-placeholder absolute inset-0"></div>
+    <!-- Olas SVG en el horizonte -->
+    <svg class="absolute bottom-0 left-0 w-[200%] h-40 md:h-56 text-sea-900/60 hero-waves" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="currentColor" d="M0 80c180 40 360 40 540 10s360-50 540-20 300 40 360 40v90H0z" />
+    </svg>
+  </div>
+
+  <!-- Degradado para legibilidad del texto -->
+  <div class="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/40 to-ink-950"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,transparent_40%,rgba(6,8,9,0.7)_100%)]"></div>
+
+  <!-- CONTENIDO -->
+  <div data-hero-content class="container-x relative z-10 pt-24 pb-16 md:pt-28">
+    <div class="max-w-3xl">
+      <!-- Badge -->
+      <div data-hero-cta class="inline-flex items-center gap-2 rounded-full border border-brand-orange/30 bg-brand-orange/10 px-4 py-1.5 text-xs md:text-sm font-medium text-brand-sand-soft backdrop-blur-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-orange opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-brand-orange"></span>
+        </span>
+        {t('hero.badge')}
+      </div>
+
+      <!-- Título -->
+      <h1 class="mt-6 text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-black leading-[0.95]">
+        <span class="block overflow-hidden"><span data-hero-line class="block text-white">{t('hero.title.1')}</span></span>
+        <span class="block overflow-hidden"><span data-hero-line class="block text-gradient-brand italic">{t('hero.title.2')}</span></span>
+      </h1>
+
+      <!-- Subtítulo -->
+      <p data-hero-sub class="mt-6 max-w-xl text-lg md:text-xl text-white/75 leading-relaxed">
+        {t('hero.subtitle')}
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a
+          data-hero-cta
+          href={waMsg}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-orange px-8 py-4 text-base font-semibold text-white shadow-[0_16px_40px_-10px_rgba(236,95,26,0.7)] transition-all duration-300 hover:bg-brand-orange-bright hover:-translate-y-0.5"
+        >
+          <Icon name="whatsapp" class="w-5 h-5" />
+          {t('hero.cta.book')}
+        </a>
+        <a
+          data-hero-cta
+          href="#flota"
+          class="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-brand-orange hover:text-brand-orange hover:-translate-y-0.5"
+        >
+          {t('hero.cta.fleet')}
+          <Icon name="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <dl class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6 max-w-2xl">
+        {
+          stats.map((s) => (
+            <div data-hero-stat class="border-l-2 border-brand-orange/40 pl-4">
+              <dt class="text-2xl md:text-3xl font-display font-bold text-white">{s.value}</dt>
+              <dd class="mt-0.5 text-xs md:text-sm text-white/55 leading-tight">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <!-- Indicador de scroll (se oculta en pantallas bajas para no solaparse) -->
+  <a href="#experiencia" class="hero-scroll-hint absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden lg:flex flex-col items-center gap-2 text-white/50 hover:text-white transition-colors" aria-label={t('hero.scroll')}>
+    <span class="text-[11px] uppercase tracking-widest">{t('hero.scroll')}</span>
+    <span class="flex h-9 w-5.5 items-start justify-center rounded-full border border-white/30 p-1">
+      <span class="h-2 w-1 rounded-full bg-white/70 animate-bounce"></span>
+    </span>
+  </a>
+</section>
+
+<style>
+  /* Mar nocturno animado (placeholder mientras no hay vídeo) */
+  .hero-placeholder {
+    background:
+      radial-gradient(80% 55% at 75% 8%, rgba(20, 163, 196, 0.38), transparent 62%),
+      radial-gradient(65% 50% at 15% 25%, rgba(236, 95, 26, 0.28), transparent 58%),
+      radial-gradient(90% 70% at 50% 100%, rgba(6, 32, 43, 0.9), transparent 70%),
+      linear-gradient(180deg, #0a2c39 0%, #08202a 35%, #060809 100%);
+  }
+  .hero-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1.5px 1.5px at 60% 70%, rgba(255, 255, 255, 0.25), transparent),
+      radial-gradient(1px 1px at 80% 40%, rgba(255, 255, 255, 0.3), transparent);
+    background-size: 200px 200px, 300px 300px, 250px 250px;
+    opacity: 0.5;
+  }
+  .hero-waves {
+    animation: wave-slide 18s linear infinite;
+  }
+  @keyframes wave-slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-25%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-waves {
+      animation: none;
+    }
+  }
+  .w-5\.5 {
+    width: 1.375rem;
+  }
+  @media (max-height: 940px) {
+    .hero-scroll-hint {
+      display: none;
+    }
+  }
+</style>

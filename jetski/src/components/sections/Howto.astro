@@ -1,0 +1,61 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, type Lang } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const steps = [
+  { icon: 'whatsapp', title: t('howto.s1.title'), text: t('howto.s1.text') },
+  { icon: 'anchor', title: t('howto.s2.title'), text: t('howto.s2.text') },
+  { icon: 'bolt', title: t('howto.s3.title'), text: t('howto.s3.text') },
+] as const;
+---
+
+<section data-howto class="relative py-24 md:py-32 scroll-mt-20">
+  <div class="container-x">
+    <div class="max-w-2xl mx-auto text-center">
+      <span data-reveal class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+        {t('howto.kicker')}
+      </span>
+      <h2 data-reveal data-reveal-delay="0.05" class="mt-4 text-4xl md:text-5xl lg:text-6xl font-black text-white">
+        {t('howto.title')}
+      </h2>
+    </div>
+
+    <div class="relative mt-16 max-w-5xl mx-auto">
+      <!-- Línea que se dibuja (desktop: horizontal, oculta en móvil) -->
+      <svg class="hidden md:block absolute top-10 left-0 w-full h-8 overflow-visible pointer-events-none" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          data-howto-line
+          d="M60 20 L500 20 L940 20"
+          fill="none"
+          stroke="#ec5f1a"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-dasharray="6 6"
+        />
+      </svg>
+
+      <ol class="grid md:grid-cols-3 gap-8 md:gap-6 relative">
+        {
+          steps.map((s, i) => (
+            <li data-howto-step class="relative flex flex-col items-center text-center">
+              <div class="relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl bg-ink-850 border border-brand-orange/30 text-brand-orange shadow-[0_10px_30px_-10px_rgba(236,95,26,0.5)]">
+                <Icon name={s.icon} class="w-8 h-8" />
+                <span class="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-brand-orange text-sm font-bold text-white">
+                  {i + 1}
+                </span>
+              </div>
+              <h3 class="mt-6 text-xl font-bold text-white">{s.title}</h3>
+              <p class="mt-2 max-w-xs text-sm text-white/60 leading-relaxed">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>

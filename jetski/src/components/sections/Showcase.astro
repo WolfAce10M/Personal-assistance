@@ -1,0 +1,108 @@
+---
+/**
+ * SHOWCASE 3D — presentación cinemática de la flota estilo Apple.
+ * La sección se queda fijada (sticky) y, al hacer scroll, cada moto se
+ * "fusiona" en la siguiente con un giro de perspectiva 3D mientras cambian
+ * nombre, potencia y precio. Banda clara para contrastar con el resto de la
+ * web y realzar los renders (que vienen sobre fondo blanco).
+ * La animación vive en src/scripts/animations.ts → initShowcase().
+ */
+import { useTranslations, type Lang } from '../../i18n/utils';
+import { FLEET, type JetSki } from '../../data/fleet';
+import type { UIKey } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const fromPrice = (j: JetSki) => Math.min(...j.prices.map((p) => p.low));
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="relative bg-white text-ink-950">
+  <!-- El alto real lo fija el JS (≈90vh por modelo); sin JS ocupa una pantalla -->
+  <div data-showcase-track class="relative">
+    <div class="sticky top-0 h-screen flex items-center overflow-hidden">
+      <div class="container-x w-full">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
+          <!-- Columna de texto: 4 fichas superpuestas que se van fundiendo -->
+          <div class="order-2 lg:order-1">
+            <span class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+              {t('showcase.kicker')}
+            </span>
+            <h2 class="mt-3 text-3xl md:text-4xl font-black">{t('showcase.title')}</h2>
+
+            <div class="relative mt-8 h-56 md:h-60">
+              {
+                FLEET.map((jet, i) => (
+                  <div data-show-text class={`absolute inset-0 ${i === 0 ? '' : 'opacity-0'}`}>
+                    <span class="text-sm font-display font-bold text-ink-950/40">
+                      {pad(i + 1)} / {pad(FLEET.length)}
+                    </span>
+                    <h3 class="mt-1 text-4xl md:text-6xl font-black leading-none">
+                      {jet.model}
+                    </h3>
+                    <p class="mt-3 max-w-md text-ink-950/65 leading-relaxed">{t(jet.tagKey as UIKey)}</p>
+                    <div class="mt-5 flex items-end gap-8">
+                      <div>
+                        <span class="block text-4xl md:text-5xl font-display font-black text-brand-orange leading-none">
+                          {jet.power}
+                        </span>
+                        <span class="text-xs uppercase tracking-wider text-ink-950/50">{t('fleet.power')}</span>
+                      </div>
+                      <div>
+                        <span class="block text-4xl md:text-5xl font-display font-black leading-none">{jet.seats}</span>
+                        <span class="text-xs uppercase tracking-wider text-ink-950/50">{t('fleet.seats')}</span>
+                      </div>
+                      <div>
+                        <span class="block text-4xl md:text-5xl font-display font-black leading-none">
+                          {fromPrice(jet)}€
+                        </span>
+                        <span class="text-xs uppercase tracking-wider text-ink-950/50">{t('fleet.from')}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+
+            <!-- Barras de progreso (una por modelo) -->
+            <div class="mt-6 flex gap-2 max-w-xs">
+              {
+                FLEET.map(() => (
+                  <span class="relative h-1 flex-1 rounded-full bg-ink-950/10 overflow-hidden">
+                    <span data-show-bar class="absolute inset-0 rounded-full bg-brand-orange scale-x-0" />
+                  </span>
+                ))
+              }
+            </div>
+            <p class="mt-3 text-xs uppercase tracking-widest text-ink-950/40">{t('showcase.scroll')} ↓</p>
+          </div>
+
+          <!-- Escenario de imagen: los renders se funden con giro 3D.
+               Sombra elíptica fija bajo la moto (los renders van sobre blanco,
+               así el plano de imagen es invisible y parece rotar la moto). -->
+          <div class="order-1 lg:order-2 relative h-[38vh] md:h-[46vh] lg:h-[60vh]" style="perspective: 1200px">
+            <div class="absolute left-1/2 bottom-[6%] -translate-x-1/2 w-3/4 h-8 rounded-[50%] bg-ink-950/12 blur-xl"></div>
+            {
+              FLEET.map((jet, i) => (
+                <img
+                  data-show-img
+                  src={jet.image}
+                  alt={`${jet.brand} ${jet.model} — ${jet.power} CV`}
+                  class={`absolute inset-0 w-full h-full object-contain will-change-transform ${i === 0 ? '' : 'opacity-0'}`}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  width="1400"
+                  height="1050"
+                />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, type Lang } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const features = [
+  { icon: 'clock', title: t('exp.f1.title'), text: t('exp.f1.text') },
+  { icon: 'anchor', title: t('exp.f2.title'), text: t('exp.f2.text') },
+  { icon: 'bolt', title: t('exp.f3.title'), text: t('exp.f3.text') },
+  { icon: 'shield', title: t('exp.f4.title'), text: t('exp.f4.text') },
+] as const;
+---
+
+<section id="experiencia" class="relative py-24 md:py-32 scroll-mt-20">
+  <div class="container-x">
+    <div class="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+      <!-- Texto -->
+      <div>
+        <span data-reveal class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+          {t('exp.kicker')}
+        </span>
+        <h2 data-reveal data-reveal-delay="0.05" class="mt-4 text-4xl md:text-5xl lg:text-6xl font-black text-white">
+          {t('exp.title')}
+        </h2>
+        <p data-reveal data-reveal-delay="0.1" class="mt-6 text-lg text-white/70 leading-relaxed max-w-lg">
+          {t('exp.text')}
+        </p>
+      </div>
+
+      <!-- Features -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        {
+          features.map((f, i) => (
+            <div
+              data-reveal
+              data-reveal-delay={String(0.1 + i * 0.08)}
+              class="group relative rounded-3xl border border-white/8 bg-ink-850/60 p-6 transition-all duration-500 hover:border-brand-orange/40 hover:bg-ink-800/80 hover:-translate-y-1"
+            >
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-orange/12 text-brand-orange transition-transform duration-500 group-hover:scale-110">
+                <Icon name={f.icon} class="w-6 h-6" />
+              </div>
+              <h3 class="mt-5 text-lg font-bold text-white">{f.title}</h3>
+              <p class="mt-2 text-sm text-white/60 leading-relaxed">{f.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

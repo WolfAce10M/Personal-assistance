@@ -1,0 +1,155 @@
+---
+import Icon from '../ui/Icon.astro';
+import { useTranslations, type Lang } from '../../i18n/utils';
+import { whatsappLink } from '../../data/site';
+import { ROUTES } from '../../data/routes';
+import type { UIKey } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="rutas" class="relative py-24 md:py-32 scroll-mt-20 bg-ink-900/50">
+  <div class="container-x">
+    <div class="max-w-2xl">
+      <span data-reveal class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+        {t('routes.kicker')}
+      </span>
+      <h2 data-reveal data-reveal-delay="0.05" class="mt-4 text-4xl md:text-5xl lg:text-6xl font-black text-white">
+        {t('routes.title')}
+      </h2>
+      <p data-reveal data-reveal-delay="0.1" class="mt-5 text-lg text-white/70 leading-relaxed">
+        {t('routes.subtitle')}
+      </p>
+    </div>
+
+    <div class="mt-14 grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-stretch">
+      <!-- Mapa de la costa: Roses → Cap de Creus. Tierra a la izquierda,
+           ruta punteada por el mar con paradas numeradas (1-4). -->
+      <div data-routes-map class="relative rounded-3xl border border-white/8 bg-gradient-to-br from-sea-900 to-ink-950 overflow-hidden min-h-[26rem] lg:min-h-full">
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <defs>
+            <linearGradient id="landG" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#164553" />
+              <stop offset="1" stop-color="#0a2833" />
+            </linearGradient>
+          </defs>
+
+          <!-- Masa de tierra (península del Cap de Creus, estilizada) -->
+          <path
+            d="M46,0
+               C50,4 55,6 60,13
+               C62,18 56,20 52,24
+               C48,28 50,32 55,35
+               C60,38 62,42 59,46
+               C55,50 50,55 51,61
+               C52,68 48,76 42,84
+               C36,90 26,95 16,98
+               C10,100 4,101 0,102
+               L0,0 Z"
+            fill="url(#landG)"
+            stroke="rgba(228,181,120,0.5)"
+            stroke-width="0.5"
+            stroke-linejoin="round"
+          />
+
+          <!-- Ruta punteada (se dibuja al hacer scroll) -->
+          <path
+            data-route-path
+            d="M17,100
+               C27,104 40,96 47,89
+               C53,83 54,71 57,63
+               C60,55 62,48 61,42
+               C60,34 59,31 58,27
+               C57,21 61,15 67,11"
+            fill="none"
+            stroke="#ec5f1a"
+            stroke-width="0.9"
+            stroke-linecap="round"
+            stroke-dasharray="2.2 1.7"
+          />
+
+          <!-- Base: Santa Margarida · Roses -->
+          <circle cx="17" cy="100" r="2" fill="#ffffff" />
+          <text x="4" y="90" font-size="2.4" fill="rgba(255,255,255,0.65)">Santa Margarida</text>
+          <text x="4" y="94" font-size="3.4" font-weight="700" fill="#ffffff">Roses</text>
+
+          <!-- Pueblo de Cadaqués (referencia en tierra) -->
+          <circle cx="49" cy="27" r="1.2" fill="#ffffff" opacity="0.9" />
+          <text x="30" y="28.5" font-size="2.8" font-weight="600" fill="rgba(255,255,255,0.85)">Cadaqués</text>
+
+          <!-- Paradas numeradas -->
+          {
+            [
+              { n: 1, x: 47, y: 89, lx: 47, ly: 96, anchor: 'middle', label: `Almadrava · 40′` },
+              { n: 2, x: 57, y: 63, lx: 62, ly: 64, anchor: 'start', label: `Cala Montjoi · 70′` },
+              { n: 3, x: 58, y: 27, lx: 63, ly: 28, anchor: 'start', label: `Badia de Cadaqués · 100′` },
+              { n: 4, x: 67, y: 11, lx: 56, y2: 0, ly: 5.5, anchor: 'start', label: `Cap de Creus · 130′` },
+            ].map((p) => (
+              <g>
+                <g data-map-pin transform={`translate(${p.x},${p.y})`}>
+                  <circle r="3.4" fill="#ec5f1a" stroke="#ffffff" stroke-width="0.6" />
+                  <text y="1.3" text-anchor="middle" font-size="3.8" font-weight="700" fill="#ffffff">
+                    {p.n}
+                  </text>
+                </g>
+                <text x={p.lx} y={p.ly} text-anchor={p.anchor} font-size="2.8" font-weight="600" fill="#ffffff">
+                  {p.label}
+                </text>
+              </g>
+            ))
+          }
+        </svg>
+
+        <span class="absolute bottom-3 left-4 text-[11px] uppercase tracking-widest text-white/40">
+          Bahía de Roses · Cap de Creus
+        </span>
+      </div>
+
+      <!-- Lista de rutas -->
+      <div class="flex flex-col gap-3">
+        {
+          ROUTES.map((r, i) => {
+            const waMsg = whatsappLink(t('common.whatsapp.route', { route: r.name }));
+            return (
+              <article
+                data-reveal
+                data-reveal-delay={String(i * 0.06)}
+                class="group flex items-center gap-4 rounded-2xl border border-white/8 bg-ink-850/60 p-4 pr-5 transition-all duration-400 hover:border-brand-orange/40 hover:bg-ink-800/80"
+              >
+                <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-2xl bg-brand-orange/10 text-brand-orange">
+                  <span class="text-lg font-display font-bold leading-none">{r.minutes}</span>
+                  <span class="text-[10px] uppercase tracking-wide">{t('fleet.min')}</span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-base font-bold text-white">{r.name}</h3>
+                  <p class="mt-0.5 text-sm text-white/55 leading-snug line-clamp-2">{t(r.descKey as UIKey)}</p>
+                  <span class="mt-1 inline-flex items-center gap-1 text-[11px] text-brand-sand/80">
+                    <Icon name="fuel" class="w-3.5 h-3.5" />
+                    {t('routes.fuel')}
+                  </span>
+                </div>
+                <div class="shrink-0 text-right">
+                  <span class="block text-[10px] uppercase tracking-wide text-white/40">{t('routes.from')}</span>
+                  <span class="text-xl font-display font-bold text-white">{r.low}€</span>
+                  <a
+                    href={waMsg}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-1.5 inline-flex items-center justify-center gap-1 rounded-full bg-white/8 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-orange group-hover:bg-brand-orange/90"
+                  >
+                    <Icon name="whatsapp" class="w-3.5 h-3.5" />
+                    {t('nav.book')}
+                  </a>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>

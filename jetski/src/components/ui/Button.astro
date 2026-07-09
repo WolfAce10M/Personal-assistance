@@ -1,0 +1,45 @@
+---
+/** Botón / enlace reutilizable con variantes de marca. */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'outline' | 'ghost';
+  size?: 'md' | 'lg';
+  class?: string;
+  external?: boolean;
+  dataAttr?: string;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: cls = '',
+  external = false,
+  dataAttr,
+} = Astro.props;
+
+const base =
+  'group inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-300 will-change-transform active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2';
+const variants = {
+  primary:
+    'bg-brand-orange text-white shadow-[0_10px_30px_-8px_rgba(236,95,26,0.6)] hover:bg-brand-orange-bright hover:shadow-[0_14px_40px_-8px_rgba(236,95,26,0.75)] hover:-translate-y-0.5',
+  outline:
+    'border border-white/20 text-white hover:border-brand-orange hover:text-brand-orange hover:-translate-y-0.5 backdrop-blur-sm',
+  ghost: 'text-white/80 hover:text-white',
+};
+const sizes = {
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-base',
+};
+const rel = external ? 'noopener noreferrer' : undefined;
+const target = external ? '_blank' : undefined;
+---
+
+<a
+  href={href}
+  class={`${base} ${variants[variant]} ${sizes[size]} ${cls}`}
+  rel={rel}
+  target={target}
+  data-cta={dataAttr}
+>
+  <slot />
+</a>
