@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
-import node from '@astrojs/node';
+import vercel from '@astrojs/vercel';
 
 // Sitio en producción — cámbialo por tu dominio real cuando lo subas.
 const SITE = 'https://www.costabravarentjetski.com';
@@ -20,9 +20,10 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
-  // Adaptador Node: permite las rutas de API del sistema de reservas
-  // (las páginas siguen siendo estáticas y rapidísimas).
-  adapter: node({ mode: 'standalone' }),
+  // Adaptador Vercel: la web se despliega en vercel.com conectando el repo
+  // de GitHub. Las páginas siguen siendo estáticas y rapidísimas; las rutas
+  // /api/* del sistema de reservas corren como funciones serverless.
+  adapter: vercel(),
   integrations: [
     sitemap({
       i18n: {
