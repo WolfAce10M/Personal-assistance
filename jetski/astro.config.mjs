@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import node from '@astrojs/node';
 
 // Sitio en producción — cámbialo por tu dominio real cuando lo subas.
 const SITE = 'https://www.costabravarentjetski.com';
@@ -19,6 +20,9 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
+  // Adaptador Node: permite las rutas de API del sistema de reservas
+  // (las páginas siguen siendo estáticas y rapidísimas).
+  adapter: node({ mode: 'standalone' }),
   integrations: [
     sitemap({
       i18n: {

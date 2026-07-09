@@ -1,0 +1,96 @@
+---
+/** Página DÓNDE ESTAMOS — mapa real de Google + cómo llegar (SEO local). */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Icon from './ui/Icon.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+import { SITE } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const address = `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}, ${SITE.address.region}`;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed&hl=${lang}`;
+
+const titles: Record<Lang, string> = {
+  es: 'Dónde estamos · Alquiler de motos de agua en Roses · Costa Brava Rent Jet Ski',
+  ca: 'On som · Lloguer de motos d’aigua a Roses · Costa Brava Rent Jet Ski',
+  fr: 'Où sommes-nous · Location jet-ski à Roses · Costa Brava Rent Jet Ski',
+  en: 'Find us · Jet ski rental in Roses · Costa Brava Rent Jet Ski',
+};
+
+const points = [
+  { icon: 'anchor', title: t('loc.p1.title'), text: t('loc.p1.text') },
+  { icon: 'pin', title: t('loc.p2.title'), text: t('loc.p2.text') },
+  { icon: 'wave', title: t('loc.p3.title'), text: t('loc.p3.text') },
+] as const;
+---
+
+<Layout lang={lang} title={titles[lang]} description={t('loc.subtitle')} path="donde-estamos">
+  <Header lang={lang} />
+  <main class="pt-28 md:pt-36 pb-24">
+    <div class="container-x">
+      <div class="max-w-2xl">
+        <span class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+          {t('nav.location')}
+        </span>
+        <h1 class="mt-3 text-4xl md:text-6xl font-black text-white">{t('loc.title')}</h1>
+        <p class="mt-4 text-lg text-white/70">{t('loc.subtitle')}</p>
+      </div>
+
+      <div class="mt-12 grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
+        <!-- Mapa real de Google -->
+        <div class="rounded-3xl border border-white/10 overflow-hidden bg-ink-850">
+          <iframe
+            src={embedUrl}
+            title={t('loc.title')}
+            class="w-full aspect-[4/3] lg:aspect-[16/11] grayscale-[0.3] contrast-[1.05]"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <!-- Datos + cómo llegar -->
+        <div class="flex flex-col gap-4">
+          <div class="rounded-3xl border border-white/10 bg-ink-850/70 p-6">
+            <address class="not-italic text-white/85 leading-relaxed">
+              <strong class="text-white">{SITE.name}</strong><br />
+              {SITE.address.street}<br />
+              {SITE.address.postalCode} {SITE.address.city} ({SITE.address.region})
+            </address>
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-orange px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-brand-orange-bright"
+            >
+              <Icon name="pin" class="w-4 h-4" />
+              {t('loc.maps')}
+            </a>
+          </div>
+
+          {
+            points.map((p) => (
+              <div class="rounded-3xl border border-white/10 bg-ink-850/60 p-5 flex gap-4">
+                <div class="shrink-0 flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-orange/12 text-brand-orange">
+                  <Icon name={p.icon} class="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 class="font-bold text-white">{p.title}</h2>
+                  <p class="mt-1 text-sm text-white/60 leading-relaxed">{p.text}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</Layout>

@@ -76,14 +76,41 @@ WhatsApp, Facebook, etc.
 
 ---
 
-## 📞 Reservas: de WhatsApp al sistema propio
+## 📞 Sistema de reservas online
 
-Hoy los botones "Reservar" abren **WhatsApp** con un mensaje ya escrito, y "Llamar"
-abre el teléfono. Los datos de contacto están centralizados en **`src/data/site.ts`**
-(teléfono, WhatsApp, dirección, redes). Cambiando ahí se actualiza toda la web.
+Páginas: `/reservas` (asistente de reserva con pago), `/donde-estamos`, `/contacto`
+(en los 4 idiomas). El asistente consulta disponibilidad en vivo, aplica el precio de
+**temporada baja/alta según la fecha** y cobra con **Stripe**. Al confirmarse el pago
+se envían dos emails (cliente + negocio) con **Resend**. Las reservas viven en
+**Supabase** y el anti-solape se garantiza a nivel de base de datos (bloqueo
+transaccional por artículo+día, con soporte de varias unidades por modelo).
 
-Cuando montemos el **sistema de reservas**, solo habrá que cambiar el destino de esos
-botones — la estructura ya está preparada para ello.
+**Sin claves configuradas la web funciona en MODO DEMO**: el flujo entero se puede
+probar sin cobrar ni guardar nada.
+
+### Puesta en marcha (3 cuentas, ~30 min)
+
+1. **Supabase** (base de datos): crea un proyecto gratis en supabase.com, abre el
+   *SQL Editor*, pega el contenido de `supabase/bookings.sql` y ejecuta. Copia la URL
+   y la *service role key* de Settings → API.
+2. **Stripe** (pagos): crea cuenta en stripe.com, copia la *Secret key*. Añade un
+   webhook apuntando a `https://TU-DOMINIO/api/stripe-webhook` con los eventos
+   `checkout.session.completed` y `checkout.session.expired`; copia el *signing secret*.
+3. **Resend** (emails): crea cuenta en resend.com, verifica tu dominio y copia la API key.
+4. Copia `.env.example` a `.env` y rellena todas las claves.
+
+### Configuración del negocio
+
+- Horarios, margen entre alquileres, capacidad de rutas, retención del hueco durante
+  el pago… todo en **`src/data/booking.ts`**.
+- Temporadas: baja 01/05–31/05 y 01/09–31/10 · alta 01/06–31/08 (misma regla en
+  cliente y servidor). Nov–abr = cerrado (no reservable online).
+
+### Despliegue
+
+La web ahora necesita **Node** (por la API de reservas): `npm run build` y luego
+`node dist/server/entry.mjs` (o despliega en Vercel/Netlify cambiando el adaptador).
+Los datos de contacto siguen centralizados en **`src/data/site.ts`**.
 
 ---
 

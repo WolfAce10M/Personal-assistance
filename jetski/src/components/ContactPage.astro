@@ -1,0 +1,170 @@
+---
+/** Página CONTACTO — vías directas + formulario que envía email al negocio. */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Icon from './ui/Icon.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+import { SITE, whatsappLink } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const wa = whatsappLink(t('common.whatsapp.msg'));
+
+const titles: Record<Lang, string> = {
+  es: 'Contacto · Costa Brava Rent Jet Ski · Roses',
+  ca: 'Contacte · Costa Brava Rent Jet Ski · Roses',
+  fr: 'Contact · Costa Brava Rent Jet Ski · Roses',
+  en: 'Contact · Costa Brava Rent Jet Ski · Roses',
+};
+---
+
+<Layout lang={lang} title={titles[lang]} description={t('contact.subtitle')} path="contacto">
+  <Header lang={lang} />
+  <main class="pt-28 md:pt-36 pb-24">
+    <div class="container-x">
+      <div class="max-w-2xl">
+        <span class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+          {t('nav.contact')}
+        </span>
+        <h1 class="mt-3 text-4xl md:text-6xl font-black text-white">{t('contact.title')}</h1>
+        <p class="mt-4 text-lg text-white/70">{t('contact.subtitle')}</p>
+      </div>
+
+      <div class="mt-12 grid lg:grid-cols-2 gap-8 items-start">
+        <!-- Vías directas -->
+        <div class="flex flex-col gap-4">
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-white/40">{t('contact.direct')}</h2>
+          <a href={wa} target="_blank" rel="noopener noreferrer" class="contact-card group">
+            <span class="contact-icon bg-green-500/15 text-green-400"><Icon name="whatsapp" class="w-6 h-6" /></span>
+            <span>
+              <strong class="block text-white">WhatsApp</strong>
+              <span class="text-sm text-white/60">{SITE.phonePrimaryDisplay}</span>
+            </span>
+            <Icon name="arrow-right" class="ml-auto w-5 h-5 text-white/30 transition-transform group-hover:translate-x-1" />
+          </a>
+          <a href={`tel:${SITE.phonePrimary}`} class="contact-card group">
+            <span class="contact-icon bg-brand-orange/15 text-brand-orange"><Icon name="phone" class="w-6 h-6" /></span>
+            <span>
+              <strong class="block text-white">{t('cta.call')}</strong>
+              <span class="text-sm text-white/60">{SITE.phonePrimaryDisplay} · {SITE.phoneSecondaryDisplay}</span>
+            </span>
+            <Icon name="arrow-right" class="ml-auto w-5 h-5 text-white/30 transition-transform group-hover:translate-x-1" />
+          </a>
+          <div class="contact-card">
+            <span class="contact-icon bg-sea-500/15 text-sea-400"><Icon name="pin" class="w-6 h-6" /></span>
+            <span>
+              <strong class="block text-white">{SITE.address.city}</strong>
+              <span class="text-sm text-white/60">{SITE.address.street}, {SITE.address.postalCode}</span>
+            </span>
+          </div>
+          <div class="flex items-center gap-3 mt-2">
+            <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-btn"><Icon name="instagram" class="w-5 h-5" /></a>
+            <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-btn"><Icon name="facebook" class="w-5 h-5" /></a>
+            <a href={SITE.social.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="social-btn"><Icon name="tiktok" class="w-5 h-5" /></a>
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <form data-contact-form class="rounded-3xl border border-white/10 bg-ink-850/70 p-6 flex flex-col gap-4">
+          <label class="block">
+            <span class="text-xs uppercase tracking-wider text-white/50">{t('contact.form.name')}</span>
+            <input name="name" type="text" required minlength="2" autocomplete="name" class="booking-input mt-1" />
+          </label>
+          <label class="block">
+            <span class="text-xs uppercase tracking-wider text-white/50">{t('contact.form.email')}</span>
+            <input name="email" type="email" required autocomplete="email" class="booking-input mt-1" />
+          </label>
+          <label class="block">
+            <span class="text-xs uppercase tracking-wider text-white/50">{t('contact.form.message')}</span>
+            <textarea name="message" required minlength="5" rows="5" class="booking-input mt-1 resize-y"></textarea>
+          </label>
+          <!-- honeypot antispam: invisible para humanos -->
+          <input name="website" type="text" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-brand-orange px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-orange-bright disabled:opacity-50"
+          >
+            {t('contact.form.send')}
+          </button>
+          <p data-form-msg class="hidden text-sm font-medium rounded-xl px-3 py-2"></p>
+        </form>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+
+  <script is:inline define:vars={{ sending: t('contact.form.sending'), sent: t('contact.form.sent'), err: t('contact.form.error'), send: t('contact.form.send') }}>
+    const form = document.querySelector('[data-contact-form]');
+    const msg = form.querySelector('[data-form-msg]');
+    const btn = form.querySelector('button[type=submit]');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = sending;
+      msg.classList.add('hidden');
+      try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const out = await res.json();
+        if (out.ok) {
+          msg.textContent = sent;
+          msg.className = 'text-sm font-medium rounded-xl px-3 py-2 bg-green-500/15 text-green-300';
+          form.reset();
+        } else throw new Error();
+      } catch {
+        msg.textContent = err;
+        msg.className = 'text-sm font-medium rounded-xl px-3 py-2 bg-red-500/15 text-red-300';
+      }
+      btn.disabled = false;
+      btn.textContent = send;
+    });
+  </script>
+</Layout>
+
+<style is:global>
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 20, 24, 0.6);
+    padding: 1.1rem 1.25rem;
+    transition: border-color 0.3s;
+  }
+  a.contact-card:hover {
+    border-color: rgba(236, 95, 26, 0.5);
+  }
+  .contact-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    flex-shrink: 0;
+  }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+  }
+  .social-btn:hover {
+    border-color: #ec5f1a;
+    color: #ec5f1a;
+  }
+</style>

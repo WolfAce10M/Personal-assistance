@@ -1,0 +1,246 @@
+---
+/**
+ * Página de RESERVAS — asistente en 3 pasos:
+ * 1) qué reservar (moto con licencia / ruta guiada)  2) fecha+hora+duración
+ * 3) datos del cliente → resumen → pago con Stripe.
+ * La disponibilidad se consulta en vivo a /api/availability y el precio
+ * final SIEMPRE lo recalcula el servidor según la temporada de la fecha.
+ */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Icon from './ui/Icon.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+import { getBookableItems, MAX_QTY } from '../data/booking';
+import type { UIKey } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items = getBookableItems();
+
+const titles: Record<Lang, string> = {
+  es: 'Reservar moto de agua en Roses · Costa Brava Rent Jet Ski',
+  ca: 'Reservar moto d’aigua a Roses · Costa Brava Rent Jet Ski',
+  fr: 'Réserver un jet-ski à Roses · Costa Brava Rent Jet Ski',
+  en: 'Book a jet ski in Roses · Costa Brava Rent Jet Ski',
+};
+const descriptions: Record<Lang, string> = {
+  es: 'Reserva online tu moto de agua o ruta guiada en la Bahía de Roses. Disponibilidad en tiempo real, pago seguro y confirmación inmediata.',
+  ca: 'Reserva en línia la teva moto d’aigua o ruta guiada a la Badia de Roses. Disponibilitat en temps real, pagament segur i confirmació immediata.',
+  fr: 'Réservez en ligne votre jet-ski ou circuit guidé dans la Baie de Roses. Disponibilité en temps réel, paiement sécurisé, confirmation immédiate.',
+  en: 'Book your jet ski or guided route in the Bay of Roses online. Real-time availability, secure payment, instant confirmation.',
+};
+
+// Datos que necesita el JS del asistente
+const bootData = {
+  locale: lang,
+  maxQty: MAX_QTY,
+  items: items.map((i) => ({
+    type: i.type,
+    id: i.id,
+    name: i.name,
+    capacity: i.capacity,
+    options: i.options,
+  })),
+  s: {
+    free: t('book.slots.free'),
+    none: t('book.slots.none'),
+    pick: t('book.slots.pick'),
+    loading: t('book.loading'),
+    closed: t('book.season.closed'),
+    errSlot: t('book.error.slot'),
+    errGeneric: t('book.error.generic'),
+    low: t('book.season.low'),
+    high: t('book.season.high'),
+    applies: t('book.season.applies'),
+    perunit: t('book.perunit'),
+    total: t('book.total'),
+    date: t('book.date'),
+    time: t('book.time'),
+    qty: t('book.qty'),
+    min: t('fleet.min'),
+    fuelYes: t('book.fuel.yes'),
+    fuelNo: t('book.fuel.no'),
+    demo: t('book.demo'),
+  },
+};
+---
+
+<Layout lang={lang} title={titles[lang]} description={descriptions[lang]} path="reservas">
+  <Header lang={lang} />
+  <main class="pt-28 md:pt-36 pb-24">
+    <div class="container-x">
+      <!-- Cabecera -->
+      <div class="max-w-2xl">
+        <span class="inline-block text-sm font-semibold uppercase tracking-widest text-brand-orange">
+          {t('nav.book')}
+        </span>
+        <h1 class="mt-3 text-4xl md:text-6xl font-black text-white">{t('book.title')}</h1>
+        <p class="mt-4 text-lg text-white/70">{t('book.subtitle')}</p>
+      </div>
+
+      <!-- Temporadas: siempre visible y clarísimo -->
+      <div class="mt-8 grid sm:grid-cols-2 gap-3 max-w-2xl">
+        <div data-season-card="low" class="rounded-2xl border border-white/10 bg-ink-850/60 p-4 transition-colors [&.is-active]:border-brand-sand [&.is-active]:bg-brand-sand/10">
+          <span class="text-sm font-bold text-brand-sand">{t('book.season.low')}</span>
+          <p class="mt-1 text-sm text-white/65">{t('book.season.low.dates')}</p>
+          <span data-season-applies class="hidden mt-1 text-xs font-semibold text-brand-sand">✓ {t('book.season.applies')}</span>
+        </div>
+        <div data-season-card="high" class="rounded-2xl border border-white/10 bg-ink-850/60 p-4 transition-colors [&.is-active]:border-brand-orange [&.is-active]:bg-brand-orange/10">
+          <span class="text-sm font-bold text-brand-orange">{t('book.season.high')}</span>
+          <p class="mt-1 text-sm text-white/65">{t('book.season.high.dates')}</p>
+          <span data-season-applies class="hidden mt-1 text-xs font-semibold text-brand-orange">✓ {t('book.season.applies')}</span>
+        </div>
+      </div>
+
+      <div class="mt-12 grid lg:grid-cols-[1.5fr_1fr] gap-8 items-start">
+        <!-- ===================== ASISTENTE ===================== -->
+        <div class="flex flex-col gap-10">
+          <!-- Paso 1: tipo + artículo -->
+          <section>
+            <h2 class="text-xl font-bold text-white">{t('book.step1')}</h2>
+            <div class="mt-4 inline-flex rounded-full border border-white/12 p-1 bg-ink-850/60">
+              <button type="button" data-type-btn="fleet" class="rounded-full px-5 py-2 text-sm font-semibold text-white/70 transition-colors [&.is-active]:bg-brand-orange [&.is-active]:text-white is-active">
+                {t('book.type.fleet')}
+              </button>
+              <button type="button" data-type-btn="route" class="rounded-full px-5 py-2 text-sm font-semibold text-white/70 transition-colors [&.is-active]:bg-brand-orange [&.is-active]:text-white">
+                {t('book.type.route')}
+              </button>
+            </div>
+
+            <!-- Tarjetas de artículo: muestran SIEMPRE los 2 precios por temporada -->
+            <div data-item-grid class="mt-5 grid sm:grid-cols-2 gap-3">
+              {
+                items.map((item) => (
+                  <button
+                    type="button"
+                    data-item-btn
+                    data-type={item.type}
+                    data-id={item.id}
+                    class={`text-left rounded-2xl border border-white/10 bg-ink-850/60 p-4 transition-all hover:border-white/30 [&.is-active]:border-brand-orange [&.is-active]:bg-brand-orange/8 ${item.type === 'route' ? 'hidden' : ''}`}
+                  >
+                    <span class="font-bold text-white block">{item.name}</span>
+                    <div class="mt-2 flex flex-col gap-1 text-sm">
+                      {item.options.map((o) => (
+                        <div class="flex items-center justify-between gap-2 text-white/70">
+                          <span>{o.minutes} {t('fleet.min')}</span>
+                          <span>
+                            <span class="text-brand-sand font-semibold">{o.low}€</span>
+                            <span class="text-white/35"> / </span>
+                            <span class="text-brand-orange font-semibold">{o.high}€</span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <span class="mt-2 block text-[11px] text-white/40">
+                      {t('book.season.low')} / {t('book.season.high')}
+                    </span>
+                  </button>
+                ))
+              }
+            </div>
+          </section>
+
+          <!-- Paso 2: fecha, duración, cantidad, hora -->
+          <section>
+            <h2 class="text-xl font-bold text-white">{t('book.step2')}</h2>
+            <div class="mt-4 grid sm:grid-cols-3 gap-3">
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.date')}</span>
+                <input data-day type="date" class="booking-input mt-1" required />
+              </label>
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.duration')}</span>
+                <select data-duration class="booking-input mt-1"></select>
+              </label>
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.qty')}</span>
+                <select data-qty class="booking-input mt-1"></select>
+              </label>
+            </div>
+
+            <div class="mt-5">
+              <span class="text-xs uppercase tracking-wider text-white/50">{t('book.time')}</span>
+              <div data-slots class="mt-2 grid grid-cols-3 sm:grid-cols-5 gap-2 min-h-16">
+                <p data-slots-msg class="col-span-full text-sm text-white/45 self-center">{t('book.slots.pick')}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Paso 3: datos -->
+          <section>
+            <h2 class="text-xl font-bold text-white">{t('book.step3')}</h2>
+            <div class="mt-4 grid sm:grid-cols-2 gap-3">
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.name')}</span>
+                <input data-name type="text" autocomplete="name" class="booking-input mt-1" required />
+              </label>
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.email')}</span>
+                <input data-email type="email" autocomplete="email" class="booking-input mt-1" required />
+              </label>
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.phone')}</span>
+                <input data-phone type="tel" autocomplete="tel" class="booking-input mt-1" required />
+              </label>
+              <label class="block">
+                <span class="text-xs uppercase tracking-wider text-white/50">{t('book.notes')}</span>
+                <input data-notes type="text" class="booking-input mt-1" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <!-- ===================== RESUMEN ===================== -->
+        <aside class="lg:sticky lg:top-24 rounded-3xl border border-white/10 bg-ink-850/70 p-6">
+          <h2 class="text-lg font-bold text-white">{t('book.summary')}</h2>
+          <dl data-summary class="mt-4 space-y-2.5 text-sm text-white/75"></dl>
+          <div class="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between">
+            <span class="text-sm uppercase tracking-wider text-white/50">{t('book.total')}</span>
+            <span data-total class="text-3xl font-display font-black text-white">—</span>
+          </div>
+          <button
+            data-pay
+            type="button"
+            disabled
+            class="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand-orange px-6 py-4 text-base font-semibold text-white shadow-[0_14px_36px_-10px_rgba(236,95,26,0.7)] transition-all hover:bg-brand-orange-bright disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-brand-orange"
+          >
+            <Icon name="check" class="w-5 h-5" />
+            {t('book.pay')}
+          </button>
+          <p data-msg class="hidden mt-3 text-sm font-medium rounded-xl px-3 py-2"></p>
+          <p class="mt-4 text-xs text-white/45 leading-relaxed">{t('book.paynote')}</p>
+          <p class="mt-2 text-xs text-white/45">{t('pricing.deposit.license')} · {t('pricing.deposit.nolicense')}</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+
+  <script is:inline type="application/json" id="booking-data" set:html={JSON.stringify(bootData)} />
+  <script>
+    import '../scripts/booking.ts';
+  </script>
+</Layout>
+
+<style is:global>
+  .booking-input {
+    width: 100%;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(20, 27, 33, 0.7);
+    color: #fff;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    color-scheme: dark; /* calendario nativo en oscuro */
+  }
+  .booking-input:focus {
+    border-color: #ec5f1a;
+  }
+</style>

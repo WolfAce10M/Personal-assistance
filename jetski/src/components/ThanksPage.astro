@@ -1,0 +1,48 @@
+---
+/** Página de confirmación tras el pago (o reserva demo). */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Icon from './ui/Icon.astro';
+import { useTranslations, localizedPath, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Layout lang={lang} title={t('thanks.title')} description={t('thanks.text')} path="reservas/gracias">
+  <Header lang={lang} />
+  <main class="min-h-[70vh] flex items-center pt-24">
+    <div class="container-x">
+      <div class="max-w-xl mx-auto text-center py-20">
+        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-500/15 text-green-400">
+          <Icon name="check" class="w-10 h-10" />
+        </div>
+        <h1 class="mt-6 text-4xl md:text-5xl font-black text-white">{t('thanks.title')}</h1>
+        <p class="mt-4 text-lg text-white/70 leading-relaxed">{t('thanks.text')}</p>
+        <p data-demo-note class="hidden mt-4 text-sm text-brand-sand bg-brand-sand/10 rounded-xl px-4 py-2">
+          {t('thanks.demo')}
+        </p>
+        <div class="mt-8">
+          <a
+            href={localizedPath(lang, '')}
+            class="inline-flex items-center gap-2 rounded-full bg-brand-orange px-7 py-3.5 font-semibold text-white transition-all hover:bg-brand-orange-bright"
+          >
+            {t('thanks.back')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+
+  <script is:inline>
+    // Muestra el aviso solo si la reserva vino del modo demo
+    if (new URLSearchParams(location.search).has('demo')) {
+      document.querySelector('[data-demo-note]')?.classList.remove('hidden');
+    }
+  </script>
+</Layout>

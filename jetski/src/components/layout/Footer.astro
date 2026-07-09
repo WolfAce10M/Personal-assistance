@@ -10,12 +10,14 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 
+const home = localizedPath(lang, '');
 const nav = [
-  { href: '#experiencia', label: t('nav.experience') },
-  { href: '#flota', label: t('nav.fleet') },
-  { href: '#rutas', label: t('nav.routes') },
-  { href: '#precios', label: t('nav.pricing') },
-  { href: '#faq', label: t('nav.faq') },
+  { href: `${home}#flota`, label: t('nav.fleet') },
+  { href: `${home}#rutas`, label: t('nav.routes') },
+  { href: `${home}#precios`, label: t('nav.pricing') },
+  { href: localizedPath(lang, 'reservas'), label: t('nav.book') },
+  { href: localizedPath(lang, 'donde-estamos'), label: t('nav.location') },
+  { href: localizedPath(lang, 'contacto'), label: t('nav.contact') },
 ];
 
 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
