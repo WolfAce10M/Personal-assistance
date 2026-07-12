@@ -25,22 +25,43 @@ const stats = [
 
 <section data-hero class="relative min-h-[100svh] flex items-center overflow-hidden">
   <!-- ==========================================================
-       FONDO DEL HERO
-       Placeholder animado (mar nocturno). Para poner tu vídeo,
-       sustituye el bloque .hero-placeholder por:
-       <video data-hero-media class="absolute inset-0 w-full h-full object-cover"
-              autoplay muted loop playsinline poster="/images/hero-poster.jpg">
-         <source src="/videos/hero.webm" type="video/webm" />
-         <source src="/videos/hero.mp4" type="video/mp4" />
-       </video>
+       FONDO DEL HERO — vídeo en bucle con carga inteligente.
+       · La portada (poster) se pinta al instante: cero espera.
+       · El JS elige la versión ligera en móvil y la completa en escritorio.
+       · Si el usuario activa "ahorro de datos" o "reducir movimiento",
+         NO se descarga el vídeo: se queda la portada (rendimiento y datos).
        ========================================================== -->
   <div data-hero-media class="absolute inset-0 will-change-transform">
-    <div class="hero-placeholder absolute inset-0"></div>
-    <!-- Olas SVG en el horizonte -->
-    <svg class="absolute bottom-0 left-0 w-[200%] h-40 md:h-56 text-sea-900/60 hero-waves" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
-      <path fill="currentColor" d="M0 80c180 40 360 40 540 10s360-50 540-20 300 40 360 40v90H0z" />
-    </svg>
+    <video
+      data-hero-video
+      class="absolute inset-0 w-full h-full object-cover"
+      poster="/images/hero-poster.jpg"
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+      data-src-desktop="/videos/hero.mp4"
+      data-src-mobile="/videos/hero-mobile.mp4"
+    ></video>
   </div>
+  <script is:inline>
+    (function () {
+      var v = document.querySelector('[data-hero-video]');
+      if (!v) return;
+      var conn = navigator.connection || {};
+      var saveData = conn.saveData === true;
+      var slow = /2g/.test(conn.effectiveType || '');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (saveData || slow || reduce) return; // solo portada
+      var mobile = window.matchMedia('(max-width: 768px)').matches;
+      v.src = mobile ? v.dataset.srcMobile : v.dataset.srcDesktop;
+      v.load();
+      var play = function () { v.play().catch(function () {}); };
+      if (v.readyState >= 2) play();
+      else v.addEventListener('canplay', play, { once: true });
+    })();
+  </script>
 
   <!-- Degradado para legibilidad del texto -->
   <div class="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/40 to-ink-950"></div>
@@ -113,41 +134,6 @@ const stats = [
 </section>
 
 <style>
-  /* Mar nocturno animado (placeholder mientras no hay vídeo) */
-  .hero-placeholder {
-    background:
-      radial-gradient(80% 55% at 75% 8%, rgba(20, 163, 196, 0.38), transparent 62%),
-      radial-gradient(65% 50% at 15% 25%, rgba(236, 95, 26, 0.28), transparent 58%),
-      radial-gradient(90% 70% at 50% 100%, rgba(6, 32, 43, 0.9), transparent 70%),
-      linear-gradient(180deg, #0a2c39 0%, #08202a 35%, #060809 100%);
-  }
-  .hero-placeholder::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(1.5px 1.5px at 20% 30%, rgba(255, 255, 255, 0.4), transparent),
-      radial-gradient(1.5px 1.5px at 60% 70%, rgba(255, 255, 255, 0.25), transparent),
-      radial-gradient(1px 1px at 80% 40%, rgba(255, 255, 255, 0.3), transparent);
-    background-size: 200px 200px, 300px 300px, 250px 250px;
-    opacity: 0.5;
-  }
-  .hero-waves {
-    animation: wave-slide 18s linear infinite;
-  }
-  @keyframes wave-slide {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-25%);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-waves {
-      animation: none;
-    }
-  }
   .w-5\.5 {
     width: 1.375rem;
   }
