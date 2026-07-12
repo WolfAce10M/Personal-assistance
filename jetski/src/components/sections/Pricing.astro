@@ -10,17 +10,16 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-// Filas "con licencia": una por (modelo × duración)
+// Filas normalizadas para las dos tablas
 const licenseRows = FLEET.flatMap((j) =>
-  j.prices.map((p) => ({
-    model: j.model,
-    power: j.power,
-    minutes: p.minutes,
-    low: p.low,
-    high: p.high,
-    fuel: p.fuelIncluded,
-  }))
+  j.prices.map((p) => ({ name: j.model, sub: `${j.power} CV`, minutes: p.minutes, low: p.low, high: p.high, fuel: p.fuelIncluded }))
 );
+const routeRows = ROUTES.map((r) => ({ name: r.name, sub: '', minutes: r.minutes, low: r.low, high: r.high, fuel: true }));
+
+const blocks = [
+  { title: t('pricing.license'), deposit: DEPOSIT_LICENSE, col: t('pricing.model'), rows: licenseRows, delay: '0' },
+  { title: t('pricing.nolicense'), deposit: DEPOSIT_NO_LICENSE, col: t('pricing.route'), rows: routeRows, delay: '0.08' },
+];
 ---
 
 <section id="precios" class="relative py-24 md:py-32 scroll-mt-20 bg-ink-900/50">
@@ -38,91 +37,83 @@ const licenseRows = FLEET.flatMap((j) =>
     </div>
 
     <div class="mt-12 grid lg:grid-cols-2 gap-6">
-      <!-- CON LICENCIA -->
-      <div data-reveal class="rounded-3xl border border-white/8 bg-ink-850/60 overflow-hidden">
-        <div class="flex items-center justify-between gap-3 p-5 border-b border-white/8">
-          <h3 class="text-lg font-bold text-white">{t('pricing.license')}</h3>
-          <span class="rounded-full bg-white/8 px-3 py-1 text-xs text-brand-sand-soft">
-            {t('fleet.deposit')} {DEPOSIT_LICENSE}€
-          </span>
-        </div>
-        <div class="overflow-x-auto no-scrollbar">
-          <table class="w-full text-sm min-w-[30rem]">
-            <thead>
-              <tr class="text-left text-[11px] uppercase tracking-wider text-white/40">
-                <th class="px-5 py-3 font-medium">{t('pricing.model')}</th>
-                <th class="px-3 py-3 font-medium">{t('pricing.duration')}</th>
-                <th class="px-3 py-3 font-medium text-right">{t('pricing.low')}</th>
-                <th class="px-3 py-3 font-medium text-right">{t('pricing.high')}</th>
-                <th class="px-5 py-3 font-medium text-center">{t('pricing.fuel')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                licenseRows.map((r, i) => (
-                  <tr class={`border-t border-white/5 ${i % 2 ? '' : 'bg-white/[0.015]'}`}>
-                    <td class="px-5 py-3">
-                      <span class="font-semibold text-white">{r.model}</span>
-                      <span class="block text-[11px] text-brand-orange/80">{r.power} CV</span>
-                    </td>
-                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes - 10}′ <span class="text-brand-sand text-xs">+10′ {t('time.gift')}</span></td>
-                    <td class="px-3 py-3 text-right text-white/80">{r.low}€</td>
-                    <td class="px-3 py-3 text-right font-semibold text-white">{r.high}€</td>
-                    <td class="px-5 py-3 text-center">
-                      {r.fuel ? (
-                        <Icon name="check" class="inline w-4 h-4 text-green-400" />
-                      ) : (
-                        <span class="text-white/30 text-xs">{t('pricing.fuel.no')}</span>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {
+        blocks.map((block) => (
+          <div data-reveal data-reveal-delay={block.delay} class="rounded-3xl border border-white/8 bg-ink-850/60 overflow-hidden">
+            <div class="flex items-center justify-between gap-3 p-5 border-b border-white/8">
+              <h3 class="text-lg font-bold text-white">{block.title}</h3>
+              <span class="rounded-full bg-white/8 px-3 py-1 text-xs text-brand-sand-soft whitespace-nowrap">
+                {t('fleet.deposit')} {block.deposit}€
+              </span>
+            </div>
 
-      <!-- SIN LICENCIA (rutas) -->
-      <div data-reveal data-reveal-delay="0.08" class="rounded-3xl border border-white/8 bg-ink-850/60 overflow-hidden">
-        <div class="flex items-center justify-between gap-3 p-5 border-b border-white/8">
-          <h3 class="text-lg font-bold text-white">{t('pricing.nolicense')}</h3>
-          <span class="rounded-full bg-white/8 px-3 py-1 text-xs text-brand-sand-soft">
-            {t('fleet.deposit')} {DEPOSIT_NO_LICENSE}€
-          </span>
-        </div>
-        <div class="overflow-x-auto no-scrollbar">
-          <table class="w-full text-sm min-w-[28rem]">
-            <thead>
-              <tr class="text-left text-[11px] uppercase tracking-wider text-white/40">
-                <th class="px-5 py-3 font-medium">{t('pricing.route')}</th>
-                <th class="px-3 py-3 font-medium">{t('pricing.duration')}</th>
-                <th class="px-3 py-3 font-medium text-right">{t('pricing.low')}</th>
-                <th class="px-3 py-3 font-medium text-right">{t('pricing.high')}</th>
-                <th class="px-5 py-3 font-medium text-center">{t('pricing.fuel')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                ROUTES.map((r, i) => (
-                  <tr class={`border-t border-white/5 ${i % 2 ? '' : 'bg-white/[0.015]'}`}>
-                    <td class="px-5 py-3 font-semibold text-white">{r.name}</td>
-                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes - 10}′ <span class="text-brand-sand text-xs">+10′ {t('time.gift')}</span></td>
-                    <td class="px-3 py-3 text-right text-white/80">{r.low}€</td>
-                    <td class="px-3 py-3 text-right font-semibold text-white">{r.high}€</td>
-                    <td class="px-5 py-3 text-center">
-                      <Icon name="check" class="inline w-4 h-4 text-green-400" />
-                    </td>
+            {/* MÓVIL: tarjetas apiladas (sin scroll horizontal) */}
+            <div class="sm:hidden divide-y divide-white/5">
+              {block.rows.map((r) => (
+                <div class="p-4">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="font-semibold text-white">{r.name}</span>
+                    {r.sub && <span class="text-[11px] text-brand-orange/80">{r.sub}</span>}
+                  </div>
+                  <div class="mt-1 text-sm text-white/60">
+                    {r.minutes - 10}′ <span class="text-brand-sand">+10′ {t('time.gift')}</span>
+                  </div>
+                  <div class="mt-2.5 flex items-center gap-4 text-sm">
+                    <span class="text-white/70">{t('pricing.low')}: <b class="text-brand-sand">{r.low}€</b></span>
+                    <span class="text-white/70">{t('pricing.high')}: <b class="text-brand-orange">{r.high}€</b></span>
+                    <span class="ml-auto inline-flex items-center gap-1 text-xs">
+                      {r.fuel ? (
+                        <><Icon name="fuel" class="w-3.5 h-3.5 text-green-400" /><span class="text-green-400">{t('pricing.fuel.yes')}</span></>
+                      ) : (
+                        <span class="text-white/35">{t('pricing.fuel.no')}</span>
+                      )}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ESCRITORIO: tabla */}
+            <div class="hidden sm:block">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="text-left text-[11px] uppercase tracking-wider text-white/40">
+                    <th class="px-5 py-3 font-medium">{block.col}</th>
+                    <th class="px-3 py-3 font-medium">{t('pricing.duration')}</th>
+                    <th class="px-3 py-3 font-medium text-right">{t('pricing.low')}</th>
+                    <th class="px-3 py-3 font-medium text-right">{t('pricing.high')}</th>
+                    <th class="px-5 py-3 font-medium text-center">{t('pricing.fuel')}</th>
                   </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </thead>
+                <tbody>
+                  {block.rows.map((r, i) => (
+                    <tr class={`border-t border-white/5 ${i % 2 ? '' : 'bg-white/[0.015]'}`}>
+                      <td class="px-5 py-3">
+                        <span class="font-semibold text-white">{r.name}</span>
+                        {r.sub && <span class="block text-[11px] text-brand-orange/80">{r.sub}</span>}
+                      </td>
+                      <td class="px-3 py-3 text-white/70 whitespace-nowrap">
+                        {r.minutes - 10}′ <span class="text-brand-sand text-xs">+10′ {t('time.gift')}</span>
+                      </td>
+                      <td class="px-3 py-3 text-right text-white/80">{r.low}€</td>
+                      <td class="px-3 py-3 text-right font-semibold text-white">{r.high}€</td>
+                      <td class="px-5 py-3 text-center">
+                        {r.fuel ? (
+                          <Icon name="check" class="inline w-4 h-4 text-green-400" />
+                        ) : (
+                          <span class="text-white/30 text-xs">{t('pricing.fuel.no')}</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
-    <!-- Notas -->
     <div data-reveal class="mt-6 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2 text-xs text-white/45">
       <span class="inline-flex items-center gap-1.5">
         <Icon name="shield" class="w-4 h-4 text-brand-sand/70" />
@@ -134,5 +125,16 @@ const licenseRows = FLEET.flatMap((j) =>
       </span>
     </div>
     <p data-reveal class="mt-2 text-xs text-white/40">{t('pricing.season.note')}</p>
+
+    <!-- CTA de conversión al final de precios -->
+    <div data-reveal class="mt-10">
+      <a
+        href={`/${lang === 'es' ? '' : lang + '/'}reservas`.replace('//', '/')}
+        class="inline-flex items-center gap-2 rounded-full bg-brand-orange px-7 py-3.5 font-semibold text-white shadow-[0_14px_36px_-10px_rgba(236,95,26,0.7)] transition-all hover:bg-brand-orange-bright hover:-translate-y-0.5"
+      >
+        {t('nav.book')}
+        <Icon name="arrow-right" class="w-5 h-5" />
+      </a>
+    </div>
   </div>
 </section>

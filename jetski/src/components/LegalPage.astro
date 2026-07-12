@@ -8,9 +8,9 @@ import Footer from './layout/Footer.astro';
 interface Props { page: 'aviso-legal' | 'privacidad' | 'cookies' | 'condiciones'; }
 const { page } = Astro.props;
 
-const OWNER = '[RAZÓN SOCIAL / NOMBRE DEL TITULAR]';
-const NIF = '[NIF/CIF]';
-const EMAIL = '[EMAIL DE CONTACTO]';
+const OWNER = 'Manuel López Luque';
+const NIF = '40452422E';
+const EMAIL = 'info@costabravarentjetski.com';
 const ADDR = 'Avinguda Port Salines, 41 · 17480 Roses (Girona)';
 
 const docs = {
@@ -40,7 +40,7 @@ const docs = {
     ['Fianza', 'Se deposita en la base antes de salir: 500 € (alquiler con licencia) o 200 € (rutas guiadas). Se devuelve íntegra al entregar la moto en buen estado.'],
     ['Requisitos', 'Conductor mayor de edad (o 16 años con autorización del tutor). Documento de identidad obligatorio. Para alquiler libre, licencia de navegación válida.'],
     ['Combustible', 'Gasolina incluida en todos los modelos y rutas excepto en la Sea-Doo RXT-X 300.'],
-    ['Cancelaciones', `Por meteorología adversa, cambio de fecha o devolución del 100%. Por parte del cliente: [POLÍTICA DE CANCELACIÓN — indicar plazos y %]. Contacto: ${EMAIL}.`],
+    ['Cancelaciones', `Por meteorología adversa, cambio de fecha o devolución del 100%. Cancelación gratuita hasta 24 horas antes de la hora de salida, con devolución del 100%. Cancelaciones con menos de 24 horas de antelación no son reembolsables. Contacto: ${EMAIL}.`],
     ['Responsabilidad', 'El cliente se compromete a seguir las instrucciones de seguridad y las zonas de navegación indicadas. Los daños por uso negligente se descontarán de la fianza según tarifa de taller.'],
   ]},
 } as const;

@@ -298,8 +298,10 @@ function initShowcase() {
   const n = imgs.length;
   if (n < 2) return;
 
-  // La altura del track define cuánto scroll dura la secuencia (~90vh por modelo).
-  track.style.height = `${n * 90 + 100}vh`;
+  // La altura del track define cuánto scroll dura la secuencia.
+  // Más corto en móvil para no alargar en exceso la página.
+  const perModel = isMobile() ? 55 : 90;
+  track.style.height = `${n * perModel + 80}vh`;
 
   gsap.set(imgs, { transformPerspective: 1200 });
   imgs.forEach((img, i) => i > 0 && gsap.set(img, { opacity: 0, rotationY: 32, scale: 0.88 }));

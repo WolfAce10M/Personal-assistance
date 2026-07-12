@@ -14,7 +14,7 @@ export const SITE = {
   phoneSecondary: '+34671971660',
   phoneSecondaryDisplay: '+34 671 971 660',
   whatsapp: '34675363023', // formato wa.me (sin +)
-  email: '', // añadir cuando lo tengáis
+  email: 'info@costabravarentjetski.com',
 
   // Ubicación (NAP)
   address: {
@@ -31,8 +31,7 @@ export const SITE = {
 
   // Redes sociales
   social: {
-    instagram: 'https://www.instagram.com/costabravarentjetski/',
-    facebook: 'https://www.facebook.com/p/Costa-Brava-Rent-Boat-jetski-100069092768506/',
+    instagram: 'https://www.instagram.com/costabravarentjetski',
     tiktok: 'https://www.tiktok.com/@costabravarentjetski',
   },
 } as const;
