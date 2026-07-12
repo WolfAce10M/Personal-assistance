@@ -61,7 +61,7 @@ function renderTypeButtons() {
 
 function renderDurations() {
   durSel.innerHTML = state.item.options
-    .map((o) => `<option value="${o.minutes}">${o.minutes} ${S.min}</option>`)
+    .map((o) => `<option value="${o.minutes}">${o.minutes - 10} ${S.min} + 10 ${S.gift}</option>`)
     .join('');
   durSel.value = String(state.minutes);
 }

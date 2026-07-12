@@ -1,0 +1,35 @@
+---
+/** Subpágina que envuelve una sección de la home con su propio SEO y CTA. */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+import Fleet from './sections/Fleet.astro';
+import Routes from './sections/Routes.astro';
+import Pricing from './sections/Pricing.astro';
+import Faq from './sections/Faq.astro';
+import CtaBand from './sections/CtaBand.astro';
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props { lang: Lang; section: 'flota' | 'rutas' | 'precios' | 'faq'; }
+const { lang, section } = Astro.props;
+const t = useTranslations(lang);
+
+const meta: Record<string, { title: string; desc: string }> = {
+  flota: { title: `${t('fleet.title')} · Sea-Doo 2026 · Costa Brava Rent Jet Ski Roses`, desc: t('fleet.subtitle') },
+  rutas: { title: `${t('routes.title')} · Cadaqués & Cap de Creus · Costa Brava Rent Jet Ski`, desc: t('routes.subtitle') },
+  precios: { title: `${t('pricing.title')} · Costa Brava Rent Jet Ski Roses`, desc: `${t('pricing.subtitle')} ${t('pricing.season.note')}` },
+  faq: { title: `${t('faq.title')} · Costa Brava Rent Jet Ski`, desc: t('faq.a1') },
+};
+---
+
+<Layout lang={lang} title={meta[section].title} description={meta[section].desc} path={section}>
+  <Header lang={lang} />
+  <main class="pt-16 md:pt-20">
+    {section === 'flota' && <Fleet lang={lang} />}
+    {section === 'rutas' && <Routes lang={lang} />}
+    {section === 'precios' && <Pricing lang={lang} />}
+    {section === 'faq' && <Faq lang={lang} />}
+    <CtaBand lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

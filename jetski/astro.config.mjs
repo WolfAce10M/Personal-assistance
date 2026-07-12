@@ -14,7 +14,7 @@ export default defineConfig({
   // el resto de idiomas con prefijo (/ca, /fr, /en).
   i18n: {
     defaultLocale: 'es',
-    locales: ['es', 'ca', 'fr', 'en'],
+    locales: ['es', 'ca', 'fr', 'en', 'de', 'nl'],
     routing: {
       prefixDefaultLocale: false, // '/' sirve español; '/ca', '/fr', '/en' el resto
       redirectToDefaultLocale: false,
@@ -28,7 +28,7 @@ export default defineConfig({
     sitemap({
       i18n: {
         defaultLocale: 'es',
-        locales: { es: 'es-ES', ca: 'ca-ES', fr: 'fr-FR', en: 'en' },
+        locales: { es: 'es-ES', ca: 'ca-ES', fr: 'fr-FR', en: 'en', de: 'de-DE', nl: 'nl-NL' },
       },
     }),
   ],

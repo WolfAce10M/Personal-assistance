@@ -15,10 +15,10 @@ const bookUrl = localizedPath(lang, 'reservas');
 
 // Anclas prefijadas con la home para que funcionen desde cualquier página
 const nav = [
-  { href: `${home}#flota`, label: t('nav.fleet') },
-  { href: `${home}#rutas`, label: t('nav.routes') },
-  { href: `${home}#precios`, label: t('nav.pricing') },
-  { href: `${home}#faq`, label: t('nav.faq') },
+  { href: localizedPath(lang, 'flota'), label: t('nav.fleet') },
+  { href: localizedPath(lang, 'rutas'), label: t('nav.routes') },
+  { href: localizedPath(lang, 'precios'), label: t('nav.pricing') },
+  { href: localizedPath(lang, 'faq'), label: t('nav.faq') },
   { href: localizedPath(lang, 'donde-estamos'), label: t('nav.location') },
   { href: localizedPath(lang, 'contacto'), label: t('nav.contact') },
 ];
@@ -32,9 +32,9 @@ const nav = [
     <!-- Logo (imagen oficial de marca) -->
     <a href={home} class="shrink-0 transition-transform hover:scale-[1.03]" aria-label="Costa Brava Rent Jet Ski">
       <img
-        src="/logo/logo-trimmed.png"
+        src="/logo/logo-dark-bg.png"
         alt="Costa Brava Rent Jet Ski — Alquiler de motos acuáticas"
-        class="h-11 md:h-[3.25rem] w-auto rounded-md"
+        class="h-12 md:h-14 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
         width="80"
         height="52"
         fetchpriority="high"

@@ -65,7 +65,7 @@ const licenseRows = FLEET.flatMap((j) =>
                       <span class="font-semibold text-white">{r.model}</span>
                       <span class="block text-[11px] text-brand-orange/80">{r.power} CV</span>
                     </td>
-                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes}′</td>
+                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes - 10}′ <span class="text-brand-sand text-xs">+10′ {t('time.gift')}</span></td>
                     <td class="px-3 py-3 text-right text-white/80">{r.low}€</td>
                     <td class="px-3 py-3 text-right font-semibold text-white">{r.high}€</td>
                     <td class="px-5 py-3 text-center">
@@ -107,7 +107,7 @@ const licenseRows = FLEET.flatMap((j) =>
                 ROUTES.map((r, i) => (
                   <tr class={`border-t border-white/5 ${i % 2 ? '' : 'bg-white/[0.015]'}`}>
                     <td class="px-5 py-3 font-semibold text-white">{r.name}</td>
-                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes}′</td>
+                    <td class="px-3 py-3 text-white/70 whitespace-nowrap">{r.minutes - 10}′ <span class="text-brand-sand text-xs">+10′ {t('time.gift')}</span></td>
                     <td class="px-3 py-3 text-right text-white/80">{r.low}€</td>
                     <td class="px-3 py-3 text-right font-semibold text-white">{r.high}€</td>
                     <td class="px-5 py-3 text-center">

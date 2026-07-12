@@ -1,0 +1,66 @@
+---
+/** Páginas legales (RGPD/LSSI). Los datos [ENTRE CORCHETES] deben sustituirse
+ *  por los reales del titular antes de publicar. */
+import Layout from '../layouts/Layout.astro';
+import Header from './layout/Header.astro';
+import Footer from './layout/Footer.astro';
+
+interface Props { page: 'aviso-legal' | 'privacidad' | 'cookies' | 'condiciones'; }
+const { page } = Astro.props;
+
+const OWNER = '[RAZÓN SOCIAL / NOMBRE DEL TITULAR]';
+const NIF = '[NIF/CIF]';
+const EMAIL = '[EMAIL DE CONTACTO]';
+const ADDR = 'Avinguda Port Salines, 41 · 17480 Roses (Girona)';
+
+const docs = {
+  'aviso-legal': { title: 'Aviso legal', body: [
+    ['Titular', `${OWNER}, con NIF ${NIF}, domicilio en ${ADDR} y email ${EMAIL}, titular del sitio web costabravarentjetski.com (en adelante, el "Sitio").`],
+    ['Objeto', 'El Sitio informa sobre los servicios de alquiler de motos acuáticas y rutas guiadas de Costa Brava Rent Jet Ski y permite su reserva online.'],
+    ['Propiedad intelectual', 'Los contenidos del Sitio (textos, imágenes, logotipos, diseño) pertenecen al titular o cuentan con licencia de uso. Queda prohibida su reproducción sin autorización.'],
+    ['Responsabilidad', 'El titular no se hace responsable del mal uso de los contenidos ni de los daños derivados del incumplimiento de las condiciones de la actividad.'],
+    ['Legislación', 'Este aviso se rige por la legislación española. Para cualquier controversia serán competentes los juzgados de Girona.'],
+  ]},
+  privacidad: { title: 'Política de privacidad', body: [
+    ['Responsable', `${OWNER} (NIF ${NIF}), ${ADDR}, ${EMAIL}.`],
+    ['Datos que tratamos', 'Los que facilitas al reservar o contactar: nombre, email, teléfono y los datos de la reserva. El pago lo procesa Stripe; no almacenamos datos de tarjeta.'],
+    ['Finalidad y base legal', 'Gestionar reservas y consultas (ejecución de contrato) y enviarte la confirmación por email. No usamos tus datos para publicidad sin tu consentimiento.'],
+    ['Destinatarios', 'Proveedores necesarios para el servicio: Supabase (base de datos), Stripe (pagos) y Resend (emails), con garantías RGPD.'],
+    ['Conservación', 'Los datos de reservas se conservan durante los plazos legales fiscales; los de contacto, hasta resolver la consulta.'],
+    ['Derechos', `Puedes ejercer acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a ${EMAIL}. También puedes reclamar ante la AEPD (aepd.es).`],
+  ]},
+  cookies: { title: 'Política de cookies', body: [
+    ['Qué usamos', 'Este Sitio solo utiliza almacenamiento técnico imprescindible: la preferencia de idioma (localStorage "cbrjs-lang") y las cookies técnicas de Stripe durante el proceso de pago.'],
+    ['Sin rastreo', 'No usamos cookies de analítica ni de publicidad. Si en el futuro se añaden, se solicitará consentimiento previo mediante un banner.'],
+    ['Gestión', 'Puedes borrar el almacenamiento desde la configuración de tu navegador en cualquier momento.'],
+  ]},
+  condiciones: { title: 'Condiciones de reserva y contratación', body: [
+    ['Reserva y pago', 'La reserva se confirma al completar el pago online (Stripe) y recibir el email de confirmación. Los precios incluyen IVA y varían por temporada: baja (01/05–31/05 y 01/09–31/10) y alta (01/06–31/08).'],
+    ['Duraciones', 'Cada alquiler incluye 10 minutos de regalo añadidos a la duración contratada.'],
+    ['Fianza', 'Se deposita en la base antes de salir: 500 € (alquiler con licencia) o 200 € (rutas guiadas). Se devuelve íntegra al entregar la moto en buen estado.'],
+    ['Requisitos', 'Conductor mayor de edad (o 16 años con autorización del tutor). Documento de identidad obligatorio. Para alquiler libre, licencia de navegación válida.'],
+    ['Combustible', 'Gasolina incluida en todos los modelos y rutas excepto en la Sea-Doo RXT-X 300.'],
+    ['Cancelaciones', `Por meteorología adversa, cambio de fecha o devolución del 100%. Por parte del cliente: [POLÍTICA DE CANCELACIÓN — indicar plazos y %]. Contacto: ${EMAIL}.`],
+    ['Responsabilidad', 'El cliente se compromete a seguir las instrucciones de seguridad y las zonas de navegación indicadas. Los daños por uso negligente se descontarán de la fianza según tarifa de taller.'],
+  ]},
+} as const;
+const doc = docs[page];
+---
+
+<Layout lang="es" title={`${doc.title} · Costa Brava Rent Jet Ski`} description={doc.title} path={page}>
+  <Header lang="es" />
+  <main class="pt-28 md:pt-36 pb-24">
+    <div class="container-x max-w-3xl">
+      <h1 class="text-4xl md:text-5xl font-black text-white">{doc.title}</h1>
+      <div class="mt-10 space-y-8">
+        {doc.body.map(([h, p]) => (
+          <section>
+            <h2 class="text-lg font-bold text-brand-orange">{h}</h2>
+            <p class="mt-2 text-white/70 leading-relaxed">{p}</p>
+          </section>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer lang="es" />
+</Layout>

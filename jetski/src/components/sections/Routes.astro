@@ -121,8 +121,8 @@ const t = useTranslations(lang);
                 class="group flex items-center gap-4 rounded-2xl border border-white/8 bg-ink-850/60 p-4 pr-5 transition-all duration-400 hover:border-brand-orange/40 hover:bg-ink-800/80"
               >
                 <div class="shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-2xl bg-brand-orange/10 text-brand-orange">
-                  <span class="text-lg font-display font-bold leading-none">{r.minutes}</span>
-                  <span class="text-[10px] uppercase tracking-wide">{t('fleet.min')}</span>
+                  <span class="text-lg font-display font-bold leading-none">{r.minutes - 10}<span class="text-brand-sand">+10</span></span>
+                  <span class="text-[10px] uppercase tracking-wide">{t('fleet.min')} · {t('time.gift')}</span>
                 </div>
                 <div class="min-w-0 flex-1">
                   <h3 class="text-base font-bold text-white">{r.name}</h3>

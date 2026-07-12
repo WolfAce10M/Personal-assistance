@@ -12,9 +12,9 @@ const year = new Date().getFullYear();
 
 const home = localizedPath(lang, '');
 const nav = [
-  { href: `${home}#flota`, label: t('nav.fleet') },
-  { href: `${home}#rutas`, label: t('nav.routes') },
-  { href: `${home}#precios`, label: t('nav.pricing') },
+  { href: localizedPath(lang, 'flota'), label: t('nav.fleet') },
+  { href: localizedPath(lang, 'rutas'), label: t('nav.routes') },
+  { href: localizedPath(lang, 'precios'), label: t('nav.pricing') },
   { href: localizedPath(lang, 'reservas'), label: t('nav.book') },
   { href: localizedPath(lang, 'donde-estamos'), label: t('nav.location') },
   { href: localizedPath(lang, 'contacto'), label: t('nav.contact') },
@@ -31,9 +31,9 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       <!-- Marca -->
       <div class="lg:col-span-1">
         <img
-          src="/logo/logo-trimmed.png"
+          src="/logo/logo-dark-bg.png"
           alt="Costa Brava Rent Jet Ski — Alquiler de motos acuáticas"
-          class="h-24 w-auto rounded-xl"
+          class="h-24 w-auto"
           width="147"
           height="96"
           loading="lazy"
@@ -110,10 +110,16 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
     <div class="mt-14 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
       <p>© {year} {SITE.name}. {t('footer.rights')}</p>
-      <div class="flex items-center gap-5">
-        <a href={localizedPath(lang, 'privacidad')} class="hover:text-white/70 transition-colors">{t('footer.legal.privacy')}</a>
-        <a href={localizedPath(lang, 'condiciones')} class="hover:text-white/70 transition-colors">{t('footer.legal.terms')}</a>
+      <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <a href="/aviso-legal" class="hover:text-white/70 transition-colors">{t('footer.legal.notice')}</a>
+        <a href="/privacidad" class="hover:text-white/70 transition-colors">{t('footer.legal.privacy')}</a>
+        <a href="/cookies" class="hover:text-white/70 transition-colors">{t('footer.legal.cookies')}</a>
+        <a href="/condiciones" class="hover:text-white/70 transition-colors">{t('footer.legal.terms')}</a>
       </div>
     </div>
+    <p class="mt-4 text-center text-[11px] text-white/30">
+      {t('credits.web')} <a href="https://agencycosta.com" target="_blank" rel="noopener noreferrer" class="underline decoration-white/20 underline-offset-2 hover:text-white/60 transition-colors">Agency Costa</a>
+      · {t('credits.sys')} <a href="https://systemsnexia.com" target="_blank" rel="noopener noreferrer" class="underline decoration-white/20 underline-offset-2 hover:text-white/60 transition-colors">Systems Nexia</a>
+    </p>
   </div>
 </footer>

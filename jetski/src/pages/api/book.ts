@@ -24,7 +24,7 @@ export const POST: APIRoute = async ({ request }) => {
   const name = str(body.name, 80);
   const email = str(body.email, 120);
   const phone = str(body.phone, 40);
-  const locale = ['es', 'ca', 'fr', 'en'].includes(String(body.locale)) ? String(body.locale) : 'es';
+  const locale = ['es', 'ca', 'fr', 'en', 'de', 'nl'].includes(String(body.locale)) ? String(body.locale) : 'es';
   const notes = str(body.notes ?? '', 500);
   if (!name || name.length < 2) return json({ error: 'BAD_NAME' }, 400);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: 'BAD_EMAIL' }, 400);
@@ -72,7 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
     const session = await stripe().checkout.sessions.create({
       mode: 'payment',
       customer_email: email,
-      locale: locale === 'ca' ? 'es' : (locale as 'es' | 'fr' | 'en'),
+      locale: (locale === 'ca' ? 'es' : locale) as 'es' | 'fr' | 'en' | 'de' | 'nl',
       line_items: [
         {
           quantity: q.qty,

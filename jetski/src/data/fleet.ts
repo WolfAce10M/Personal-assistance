@@ -1,6 +1,6 @@
 /**
  * Flota de motos acuáticas (modalidad CON LICENCIA).
- * Precios en € tal cual el folleto 2025-26.
+ * Precios en € oficiales. Motos nuevas 2026. Duraciones: 60'+10' y 120'+10' de regalo.
  * Temporada baja: 01/05–31/05 y 01/09–31/10 · Alta: 01/06–31/08.
  * Fianza (depósito reembolsable): 500€.
  */
@@ -41,7 +41,7 @@ export const FLEET: JetSki[] = [
     image: '/images/fleet/spark-trixx.webp',
     prices: [
       { minutes: 70, low: 115, high: 120, fuelIncluded: true },
-      { minutes: 130, low: 195, high: 205, fuelIncluded: false },
+      { minutes: 130, low: 195, high: 205, fuelIncluded: true },
     ],
   },
   {
@@ -56,7 +56,7 @@ export const FLEET: JetSki[] = [
     image: '/images/fleet/gtx-pro.webp',
     prices: [
       { minutes: 70, low: 120, high: 140, fuelIncluded: true },
-      { minutes: 130, low: 220, high: 240, fuelIncluded: false },
+      { minutes: 130, low: 220, high: 240, fuelIncluded: true },
     ],
   },
   {
@@ -71,7 +71,7 @@ export const FLEET: JetSki[] = [
     image: '/images/fleet/gtx.webp',
     prices: [
       { minutes: 70, low: 140, high: 160, fuelIncluded: true },
-      { minutes: 130, low: 260, high: 280, fuelIncluded: false },
+      { minutes: 130, low: 260, high: 280, fuelIncluded: true },
     ],
   },
   {

@@ -25,6 +25,8 @@ const hreflangMap: Record<Lang, string> = {
   ca: 'ca-ES',
   fr: 'fr-FR',
   en: 'en',
+  de: 'de-DE',
+  nl: 'nl-NL',
 };
 
 // JSON-LD LocalBusiness para SEO local
@@ -104,6 +106,26 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <script is:inline>
+      // Detección de idioma: primera visita a '/', sin preferencia guardada.
+      (function () {
+        try {
+          var langs = ['es', 'ca', 'fr', 'en', 'de', 'nl'];
+          var stored = localStorage.getItem('cbrjs-lang');
+          var seg = location.pathname.split('/')[1];
+          var current = langs.indexOf(seg) > -1 ? seg : 'es';
+          if (!stored && location.pathname === '/') {
+            var nav = (navigator.language || 'es').slice(0, 2).toLowerCase();
+            if (nav !== 'es' && langs.indexOf(nav) > -1) {
+              localStorage.setItem('cbrjs-lang', nav);
+              location.replace('/' + nav + '/');
+              return;
+            }
+          }
+          localStorage.setItem('cbrjs-lang', current);
+        } catch (e) {}
+      })();
+    </script>
     <slot />
     <script>
       import '../scripts/animations.ts';

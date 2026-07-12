@@ -8,6 +8,8 @@ export const LANGUAGES = {
   ca: 'Català',
   fr: 'Français',
   en: 'English',
+  de: 'Deutsch',
+  nl: 'Nederlands',
 } as const;
 
 export type Lang = keyof typeof LANGUAGES;
@@ -28,7 +30,7 @@ export const ui = {
     'nav.close': 'Cerrar',
 
     // --- Hero ---
-    'hero.badge': 'Nuevas motos 2025 · a 5 min del mar',
+    'hero.badge': 'Motos nuevas 2026 · a 5 min del mar',
     'hero.title.1': 'Vive la Costa Brava',
     'hero.title.2': 'como nunca antes',
     'hero.subtitle': 'Alquiler de motos acuáticas en Roses y Empuriabrava. Diversión, libertad y paisaje. Con o sin licencia.',
@@ -49,7 +51,7 @@ export const ui = {
     'exp.f1.text': 'Base junto al puerto: en un momento estás surcando la bahía.',
     'exp.f2.title': 'Con o sin licencia',
     'exp.f2.text': 'Sin experiencia y sin carné: te acompañamos en ruta guiada.',
-    'exp.f3.title': 'Motos de 2025',
+    'exp.f3.title': 'Motos de 2026',
     'exp.f3.text': 'Flota Sea-Doo nueva, de 90 a 300 CV, en perfecto estado.',
     'exp.f4.title': 'Máxima seguridad',
     'exp.f4.text': 'Briefing, chalecos y guía profesional en todas las rutas.',
@@ -57,7 +59,7 @@ export const ui = {
     // --- Flota ---
     'fleet.kicker': 'La flota',
     'fleet.title': 'Elige tu máquina',
-    'fleet.subtitle': 'Modalidad con licencia. Cuatro modelos Sea-Doo para cada nivel de adrenalina.',
+    'fleet.subtitle': 'Modalidad con licencia. Cuatro Sea-Doo 2026 para cada nivel de adrenalina. Gasolina incluida en todos los modelos salvo la RXT-X 300.',
     'fleet.seats': 'plazas',
     'fleet.units': 'uds.',
     'fleet.power': 'CV',
@@ -124,7 +126,7 @@ export const ui = {
     'faq.q3': '¿Dónde estáis y dónde se sale?',
     'faq.a3': 'Nuestra base está en la Avinguda Port Salines, 41, en Roses (Girona), a solo 5 minutos del mar abierto de la Bahía de Roses.',
     'faq.q4': '¿La gasolina está incluida?',
-    'faq.a4': 'En las rutas sin licencia, sí, siempre. En la modalidad con licencia depende del modelo y la duración; en la tabla de precios lo indicamos en cada caso.',
+    'faq.a4': 'Sí, la gasolina está incluida en todas las motos y duraciones, excepto en la Sea-Doo RXT-X 300. En las rutas guiadas está incluida siempre.',
     'faq.q5': '¿Qué es la fianza?',
     'faq.a5': 'Es un depósito 100% reembolsable que se devuelve al entregar la moto en buen estado: 500 € con licencia y 200 € en rutas sin licencia.',
     'faq.q6': '¿Cómo reservo?',
@@ -148,7 +150,7 @@ export const ui = {
     'footer.hours.note': 'Consulta disponibilidad por WhatsApp.',
 
     // --- Genérico ---
-    'showcase.kicker': 'Flota 2025',
+    'showcase.kicker': 'Flota 2026',
     'showcase.title': 'De 90 a 300 CV',
     'showcase.scroll': 'Sigue bajando',
 
@@ -220,6 +222,12 @@ export const ui = {
     'contact.form.sending': 'Enviando…',
     'contact.form.sent': '¡Mensaje enviado! Te responderemos muy pronto.',
     'contact.form.error': 'No se pudo enviar. Prueba por WhatsApp o llámanos.',
+
+    'time.gift': 'gratis',
+    'credits.web': 'Web creada por',
+    'credits.sys': 'Sistema desarrollado por',
+    'footer.legal.notice': 'Aviso legal',
+    'footer.legal.cookies': 'Cookies',
   },
 
   ca: {
@@ -234,7 +242,7 @@ export const ui = {
     'nav.menu': 'Menú',
     'nav.close': 'Tancar',
 
-    'hero.badge': 'Motos noves 2025 · a 5 min del mar',
+    'hero.badge': 'Motos noves 2026 · a 5 min del mar',
     'hero.title.1': 'Viu la Costa Brava',
     'hero.title.2': 'com mai abans',
     'hero.subtitle': 'Lloguer de motos aquàtiques a Roses i Empuriabrava. Diversió, llibertat i paisatge. Amb o sense llicència.',
@@ -254,7 +262,7 @@ export const ui = {
     'exp.f1.text': 'Base al costat del port: en un moment estàs solcant la badia.',
     'exp.f2.title': 'Amb o sense llicència',
     'exp.f2.text': 'Sense experiència i sense carnet: t’acompanyem en ruta guiada.',
-    'exp.f3.title': 'Motos del 2025',
+    'exp.f3.title': 'Motos del 2026',
     'exp.f3.text': 'Flota Sea-Doo nova, de 90 a 300 CV, en perfecte estat.',
     'exp.f4.title': 'Màxima seguretat',
     'exp.f4.text': 'Briefing, armilles i guia professional a totes les rutes.',
@@ -324,7 +332,7 @@ export const ui = {
     'faq.q3': 'On sou i des d’on se surt?',
     'faq.a3': 'La nostra base és a l’Avinguda Port Salines, 41, a Roses (Girona), a només 5 minuts del mar obert de la Badia de Roses.',
     'faq.q4': 'La benzina està inclosa?',
-    'faq.a4': 'A les rutes sense llicència, sí, sempre. En la modalitat amb llicència depèn del model i la durada; a la taula de preus ho indiquem en cada cas.',
+    'faq.a4': 'Sí, la benzina està inclosa a totes les motos i durades, excepte a la Sea-Doo RXT-X 300. A les rutes guiades està inclosa sempre.',
     'faq.q5': 'Què és la fiança?',
     'faq.a5': 'És un dipòsit 100% reemborsable que es retorna en lliurar la moto en bon estat: 500 € amb llicència i 200 € en rutes sense llicència.',
     'faq.q6': 'Com reservo?',
@@ -345,7 +353,7 @@ export const ui = {
     'footer.legal.terms': 'Condicions',
     'footer.hours.note': 'Consulta disponibilitat per WhatsApp.',
 
-    'showcase.kicker': 'Flota 2025',
+    'showcase.kicker': 'Flota 2026',
     'showcase.title': 'De 90 a 300 CV',
     'showcase.scroll': 'Continua baixant',
 
@@ -417,6 +425,12 @@ export const ui = {
     'contact.form.sending': 'Enviant…',
     'contact.form.sent': 'Missatge enviat! Et respondrem molt aviat.',
     'contact.form.error': 'No s’ha pogut enviar. Prova per WhatsApp o truca’ns.',
+
+    'time.gift': 'gratis',
+    'credits.web': 'Web creada per',
+    'credits.sys': 'Sistema desenvolupat per',
+    'footer.legal.notice': 'Avís legal',
+    'footer.legal.cookies': 'Cookies',
   },
 
   fr: {
@@ -431,7 +445,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'nav.close': 'Fermer',
 
-    'hero.badge': 'Nouveaux jet-skis 2025 · à 5 min de la mer',
+    'hero.badge': 'Jet-skis neufs 2026 · à 5 min de la mer',
     'hero.title.1': 'Vivez la Costa Brava',
     'hero.title.2': 'comme jamais',
     'hero.subtitle': 'Location de jet-skis à Roses et Empuriabrava. Sensations, liberté et paysages. Avec ou sans permis.',
@@ -451,7 +465,7 @@ export const ui = {
     'exp.f1.text': 'Base près du port : en un instant vous filez sur la baie.',
     'exp.f2.title': 'Avec ou sans permis',
     'exp.f2.text': 'Sans expérience ni permis : nous vous guidons lors du circuit.',
-    'exp.f3.title': 'Jet-skis de 2025',
+    'exp.f3.title': 'Jet-skis de 2026',
     'exp.f3.text': 'Flotte Sea-Doo neuve, de 90 à 300 ch, en parfait état.',
     'exp.f4.title': 'Sécurité maximale',
     'exp.f4.text': 'Briefing, gilets et guide professionnel sur tous les circuits.',
@@ -521,7 +535,7 @@ export const ui = {
     'faq.q3': 'Où êtes-vous et d’où part-on ?',
     'faq.a3': 'Notre base se trouve Avinguda Port Salines, 41, à Roses (Gérone), à seulement 5 minutes de la mer ouverte de la Baie de Roses.',
     'faq.q4': 'Le carburant est-il inclus ?',
-    'faq.a4': 'Sur les circuits sans permis, oui, toujours. En formule avec permis, cela dépend du modèle et de la durée ; c’est indiqué dans le tableau des tarifs.',
+    'faq.a4': 'Oui, le carburant est inclus sur tous les jet-skis et toutes les durées, sauf sur le Sea-Doo RXT-X 300. Sur les circuits guidés il est toujours inclus.',
     'faq.q5': 'Qu’est-ce que la caution ?',
     'faq.a5': 'C’est un dépôt 100 % remboursable rendu au retour du jet-ski en bon état : 500 € avec permis et 200 € pour les circuits sans permis.',
     'faq.q6': 'Comment réserver ?',
@@ -542,7 +556,7 @@ export const ui = {
     'footer.legal.terms': 'Conditions',
     'footer.hours.note': 'Disponibilité sur demande par WhatsApp.',
 
-    'showcase.kicker': 'Flotte 2025',
+    'showcase.kicker': 'Flotte 2026',
     'showcase.title': 'De 90 à 300 ch',
     'showcase.scroll': 'Continuez à défiler',
 
@@ -614,6 +628,12 @@ export const ui = {
     'contact.form.sending': 'Envoi…',
     'contact.form.sent': 'Message envoyé ! Nous vous répondrons très vite.',
     'contact.form.error': 'Envoi impossible. Essayez WhatsApp ou appelez-nous.',
+
+    'time.gift': 'offerts',
+    'credits.web': 'Site créé par',
+    'credits.sys': 'Système développé par',
+    'footer.legal.notice': 'Mentions légales',
+    'footer.legal.cookies': 'Cookies',
   },
 
   en: {
@@ -628,7 +648,7 @@ export const ui = {
     'nav.menu': 'Menu',
     'nav.close': 'Close',
 
-    'hero.badge': 'New 2025 jet skis · 5 min from the sea',
+    'hero.badge': 'Brand-new 2026 jet skis · 5 min from the sea',
     'hero.title.1': 'Live the Costa Brava',
     'hero.title.2': 'like never before',
     'hero.subtitle': 'Jet ski rental in Roses and Empuriabrava. Fun, freedom and scenery. With or without a licence.',
@@ -648,7 +668,7 @@ export const ui = {
     'exp.f1.text': 'Base right by the marina: in no time you’re carving the bay.',
     'exp.f2.title': 'With or without a licence',
     'exp.f2.text': 'No experience or licence needed: we guide you on the route.',
-    'exp.f3.title': '2025 jet skis',
+    'exp.f3.title': '2026 jet skis',
     'exp.f3.text': 'Brand-new Sea-Doo fleet, from 90 to 300 hp, in perfect shape.',
     'exp.f4.title': 'Maximum safety',
     'exp.f4.text': 'Briefing, life jackets and a pro guide on every route.',
@@ -718,7 +738,7 @@ export const ui = {
     'faq.q3': 'Where are you and where do we set off from?',
     'faq.a3': 'Our base is at Avinguda Port Salines, 41, in Roses (Girona), just 5 minutes from the open sea of the Bay of Roses.',
     'faq.q4': 'Is fuel included?',
-    'faq.a4': 'On no-licence routes, yes, always. In licence mode it depends on the model and duration; the price table shows it in each case.',
+    'faq.a4': 'Yes, fuel is included on every jet ski and duration, except the Sea-Doo RXT-X 300. On guided routes it is always included.',
     'faq.q5': 'What is the deposit?',
     'faq.a5': 'It’s a 100% refundable deposit returned when the jet ski comes back in good condition: €500 with licence and €200 for no-licence routes.',
     'faq.q6': 'How do I book?',
@@ -739,7 +759,7 @@ export const ui = {
     'footer.legal.terms': 'Terms',
     'footer.hours.note': 'Check availability on WhatsApp.',
 
-    'showcase.kicker': '2025 fleet',
+    'showcase.kicker': '2026 fleet',
     'showcase.title': 'From 90 to 300 hp',
     'showcase.scroll': 'Keep scrolling',
 
@@ -811,6 +831,50 @@ export const ui = {
     'contact.form.sending': 'Sending…',
     'contact.form.sent': 'Message sent! We’ll reply very soon.',
     'contact.form.error': 'Could not send. Try WhatsApp or give us a call.',
+
+    'time.gift': 'free',
+    'credits.web': 'Website by',
+    'credits.sys': 'System developed by',
+    'footer.legal.notice': 'Legal notice',
+    'footer.legal.cookies': 'Cookies',
+  },
+  de: {
+    'nav.experience': 'Erlebnis', 'nav.fleet': 'Flotte', 'nav.routes': 'Touren', 'nav.howto': 'So funktioniert’s', 'nav.pricing': 'Preise', 'nav.faq': 'FAQ', 'nav.contact': 'Kontakt', 'nav.book': 'Jetzt buchen', 'nav.menu': 'Menü', 'nav.close': 'Schließen', 'nav.location': 'Standort',
+    'hero.badge': 'Neue Jetskis 2026 · 5 Min. vom Meer', 'hero.title.1': 'Erlebe die Costa Brava', 'hero.title.2': 'wie nie zuvor', 'hero.subtitle': 'Jetski-Verleih in Roses und Empuriabrava. Spaß, Freiheit und Panorama. Mit oder ohne Führerschein.', 'hero.cta.book': 'Per WhatsApp buchen', 'hero.cta.fleet': 'Flotte ansehen', 'hero.scroll': 'Scrollen und entdecken', 'hero.stat.from': 'Ab', 'hero.stat.jetskis': 'Jetskis in der Flotte', 'hero.stat.routes': 'Geführte Touren', 'hero.stat.license': 'Ohne Führerschein', 'hero.stat.license.value': 'Verfügbar',
+    'exp.kicker': 'Das Erlebnis', 'exp.title': 'Das Mittelmeer mit Vollgas', 'exp.text': 'Wir starten im Herzen der Bucht von Roses, fünf Minuten vom offenen Meer. Versteckte Buchten, die Klippen des Cap de Creus und kristallklares Wasser erwarten dich.', 'exp.f1.title': '5 Minuten vom Meer', 'exp.f1.text': 'Basis direkt am Hafen: im Nu bist du in der Bucht unterwegs.', 'exp.f2.title': 'Mit oder ohne Führerschein', 'exp.f2.text': 'Keine Erfahrung nötig: wir begleiten dich auf geführten Touren.', 'exp.f3.title': 'Jetskis von 2026', 'exp.f3.text': 'Neue Sea-Doo-Flotte, 90 bis 300 PS, in Top-Zustand.', 'exp.f4.title': 'Maximale Sicherheit', 'exp.f4.text': 'Briefing, Westen und Profi-Guide auf allen Touren.',
+    'fleet.kicker': 'Die Flotte', 'fleet.title': 'Wähle deine Maschine', 'fleet.subtitle': 'Mit Führerschein. Vier Sea-Doo 2026 für jedes Adrenalin-Level. Benzin bei allen Modellen inklusive, außer RXT-X 300.', 'fleet.seats': 'Plätze', 'fleet.units': 'Stk.', 'fleet.power': 'PS', 'fleet.from': 'ab', 'fleet.min': 'Min.', 'fleet.deposit': 'Kaution', 'fleet.book': 'Dieses Modell buchen', 'fleet.thrill.1': 'Spaß', 'fleet.thrill.2': 'Sport', 'fleet.thrill.3': 'Adrenalin', 'fleet.spark.tag': 'Wendig, verspielt und perfekt für den Einstieg mit Tricks.', 'fleet.gtxpro.tag': 'Die ideale Balance: stabil, bequem und mit gutem Antritt.', 'fleet.gtx.tag': 'Mehr Power und Komfort, um die Bucht mühelos zu erobern.', 'fleet.rxtx.tag': 'Das Biest: 300 PS pure Beschleunigung für Profis.',
+    'routes.kicker': 'Geführte Touren', 'routes.title': 'Entdecke einzigartige Orte', 'routes.subtitle': 'Ohne Führerschein, mit Profi-Guide. Benzin auf allen Touren inklusive.', 'routes.duration': 'Dauer', 'routes.from': 'ab', 'routes.fuel': 'Benzin inklusive', 'routes.book': 'Tour buchen', 'routes.almadrava.desc': 'Der perfekte Einstieg: Almadrava-Strand und erste Fahrgefühle auf dem Meer.', 'routes.montjoi.desc': 'Kurs auf eine der schönsten Buchten, zwischen Pinien und türkisem Wasser.', 'routes.cadaques.desc': 'Dalís weißes Dorf vom Meer aus: Klippen, Leuchttürme und Postkartenblicke.', 'routes.capdecreus.desc': 'Das große Abenteuer zum östlichsten Punkt der Halbinsel. Pure wilde Natur.',
+    'howto.kicker': 'So funktioniert’s', 'howto.title': 'Vom Sofa aufs Meer in 3 Schritten', 'howto.s1.title': 'Buchen', 'howto.s1.text': 'Schreib uns per WhatsApp oder ruf an. Verfügbarkeit sofort bestätigt.', 'howto.s2.title': 'Ankommen', 'howto.s2.text': 'Komm zu unserer Basis in Roses. Ausrüstung und Sicherheits-Briefing inklusive.', 'howto.s3.title': 'Gas geben', 'howto.s3.text': 'Genieß es! Allein oder auf geführter Tour — das Mittelmeer gehört dir.',
+    'pricing.kicker': 'Preise', 'pricing.title': 'Klare Preise, keine Überraschungen', 'pricing.subtitle': 'Preise ansehen und buchen. Die Kaution ist zu 100 % erstattungsfähig.', 'pricing.license': 'Mit Führerschein', 'pricing.nolicense': 'Ohne Führerschein · Touren', 'pricing.model': 'Modell', 'pricing.route': 'Tour', 'pricing.duration': 'Dauer', 'pricing.low': 'Nebensaison', 'pricing.high': 'Hochsaison', 'pricing.fuel': 'Benzin', 'pricing.fuel.yes': 'Inklusive', 'pricing.fuel.no': 'Nicht inkl.', 'pricing.deposit.license': 'Kaution mit Führerschein: 500 € (erstattungsfähig)', 'pricing.deposit.nolicense': 'Kaution ohne Führerschein: 200 € (erstattungsfähig)', 'pricing.season.note': 'Nebensaison: 01.05.–31.05. & 01.09.–31.10. · Hochsaison: 01.06.–31.08.',
+    'faq.kicker': 'Häufige Fragen', 'faq.title': 'Alles, was du wissen musst', 'faq.q1': 'Brauche ich einen Führerschein, um einen Jetski zu mieten?', 'faq.a1': 'Nicht unbedingt. Wir bieten geführte Touren ohne Führerschein mit Profi-Guide. Mit Bootsführerschein kannst du frei fahren.', 'faq.q2': 'Wie alt muss ich sein?', 'faq.a2': 'Zum Fahren musst du volljährig sein, ab 16 mit Einverständnis. Mitfahrer dürfen minderjährig sein, in Verantwortung eines Erwachsenen.', 'faq.q3': 'Wo seid ihr und wo geht es los?', 'faq.a3': 'Unsere Basis: Avinguda Port Salines 41, Roses (Girona), nur 5 Minuten vom offenen Meer.', 'faq.q4': 'Ist Benzin inklusive?', 'faq.a4': 'Ja, Benzin ist bei allen Jetskis und Zeiten inklusive, außer beim Sea-Doo RXT-X 300. Auf geführten Touren immer inklusive.', 'faq.q5': 'Was ist die Kaution?', 'faq.a5': 'Eine zu 100 % erstattungsfähige Sicherheit: 500 € mit Führerschein, 200 € auf Touren.', 'faq.q6': 'Wie buche ich?', 'faq.a6': 'Am schnellsten online hier auf der Website, per WhatsApp oder Telefon.',
+    'cta.title': 'Bereit, Gas zu geben?', 'cta.text': 'Buche deinen Jetski noch heute und erlebe die Costa Brava vom Meer aus.', 'cta.book': 'Per WhatsApp buchen', 'cta.call': 'Jetzt anrufen',
+    'footer.tagline': 'Jetski-Verleih in der Bucht von Roses, Costa Brava.', 'footer.explore': 'Entdecken', 'footer.contact': 'Kontakt', 'footer.location': 'Standort', 'footer.follow': 'Folge uns', 'footer.rights': 'Alle Rechte vorbehalten.', 'footer.legal.privacy': 'Datenschutz', 'footer.legal.terms': 'AGB', 'footer.legal.notice': 'Impressum', 'footer.legal.cookies': 'Cookies', 'footer.hours.note': 'Verfügbarkeit per WhatsApp anfragen.',
+    'showcase.kicker': 'Flotte 2026', 'showcase.title': 'Von 90 bis 300 PS', 'showcase.scroll': 'Weiterscrollen',
+    'common.whatsapp.msg': 'Hallo, ich möchte einen Jetski bei Costa Brava Rent Jet Ski buchen.', 'common.whatsapp.model': 'Hallo, ich interessiere mich für die {model}. Habt ihr Verfügbarkeit?', 'common.whatsapp.route': 'Hallo, ich interessiere mich für die Tour {route}. Habt ihr Verfügbarkeit?', 'lang.switch': 'Sprache',
+    'book.title': 'Buche deinen Jetski', 'book.subtitle': 'Wähle Jetski oder Tour, Datum und Uhrzeit. Sichere Online-Zahlung und sofortige Bestätigung per E-Mail.', 'book.step1': '1 · Was möchtest du buchen?', 'book.type.fleet': 'Jetski mit Führerschein', 'book.type.route': 'Geführte Tour · ohne Führerschein', 'book.step2': '2 · Datum, Uhrzeit und Dauer', 'book.date': 'Datum', 'book.duration': 'Dauer', 'book.qty': 'Anzahl Jetskis', 'book.time': 'Startzeit', 'book.step3': '3 · Deine Daten', 'book.name': 'Vor- und Nachname', 'book.email': 'E-Mail', 'book.phone': 'Telefon / WhatsApp', 'book.notes': 'Anmerkungen (optional)', 'book.summary': 'Übersicht', 'book.total': 'Gesamt', 'book.perunit': '€ / Jetski', 'book.pay': 'Bezahlen & buchen', 'book.paynote': '100 % sichere Kartenzahlung (Stripe). Die Kaution wird nicht online abgebucht: sie wird an der Basis hinterlegt und bei Rückgabe erstattet.', 'book.season.title': 'Saisons & Preise', 'book.season.low': 'Nebensaison', 'book.season.high': 'Hochsaison', 'book.season.low.dates': '1. Mai – 31. Mai · 1. Sept – 31. Okt', 'book.season.high.dates': '1. Juni – 31. August', 'book.season.applies': 'gilt für dein Datum', 'book.season.closed': 'An diesem Datum haben wir geschlossen (Nov–Apr). Schreib uns per WhatsApp.', 'book.slots.none': 'Keine freien Zeiten an diesem Tag. Versuch ein anderes Datum.', 'book.slots.free': 'frei', 'book.slots.pick': 'Wähle ein Datum, um freie Zeiten zu sehen', 'book.loading': 'Verfügbarkeit wird geprüft…', 'book.error.slot': 'Dieser Slot wurde gerade vergeben. Wähle eine andere Zeit.', 'book.error.generic': 'Etwas ist schiefgelaufen. Versuch es erneut oder schreib uns per WhatsApp.', 'book.demo': 'Demo-Modus: Zahlungen sind noch nicht aktiv. Die Buchung wird ohne Abbuchung simuliert.', 'book.fuel.yes': 'Benzin inklusive', 'book.fuel.no': 'Benzin nicht inklusive',
+    'thanks.title': 'Buchung bestätigt!', 'thanks.text': 'Wir haben dir alle Details per E-Mail geschickt. Bis bald an der Avinguda Port Salines 41, Roses!', 'thanks.demo': 'Testbuchung im Demo-Modus erstellt (ohne Zahlung).', 'thanks.back': 'Zur Startseite',
+    'loc.title': 'Standort', 'loc.subtitle': 'Im Herzen der Bucht von Roses, 5 Minuten vom offenen Meer.', 'loc.maps': 'In Google Maps öffnen', 'loc.p1.title': 'Nautische Basis', 'loc.p1.text': 'Avinguda Port Salines 41 · 17480 Roses (Girona), Spanien. Am Kanal von Santa Margarida.', 'loc.p2.title': 'Anfahrt mit dem Auto', 'loc.p2.text': '5 Min. vom Zentrum von Roses, 10 Min. von Empuriabrava über die C-68. Parken direkt am Hafen.', 'loc.p3.title': 'Startpunkt', 'loc.p3.text': 'Durch den Kanal direkt aufs Meer: in 5 Minuten bist du in der Bucht unterwegs.',
+    'contact.title': 'Kontakt', 'contact.subtitle': 'Fragen, Gruppen, Events? Schreib uns — wir antworten schnell.', 'contact.direct': 'Direkter Kontakt', 'contact.form.name': 'Name', 'contact.form.email': 'E-Mail', 'contact.form.message': 'Nachricht', 'contact.form.send': 'Nachricht senden', 'contact.form.sending': 'Wird gesendet…', 'contact.form.sent': 'Nachricht gesendet! Wir melden uns sehr bald.', 'contact.form.error': 'Senden fehlgeschlagen. Versuch WhatsApp oder ruf uns an.',
+    'time.gift': 'geschenkt', 'credits.web': 'Website von', 'credits.sys': 'System entwickelt von',
+  },
+  nl: {
+    'nav.experience': 'Ervaring', 'nav.fleet': 'Vloot', 'nav.routes': 'Routes', 'nav.howto': 'Hoe het werkt', 'nav.pricing': 'Prijzen', 'nav.faq': 'FAQ', 'nav.contact': 'Contact', 'nav.book': 'Nu boeken', 'nav.menu': 'Menu', 'nav.close': 'Sluiten', 'nav.location': 'Locatie',
+    'hero.badge': 'Nieuwe jetski’s 2026 · 5 min. van zee', 'hero.title.1': 'Beleef de Costa Brava', 'hero.title.2': 'als nooit tevoren', 'hero.subtitle': 'Jetski-verhuur in Roses en Empuriabrava. Plezier, vrijheid en uitzicht. Met of zonder vaarbewijs.', 'hero.cta.book': 'Boek via WhatsApp', 'hero.cta.fleet': 'Bekijk de vloot', 'hero.scroll': 'Scroll om te ontdekken', 'hero.stat.from': 'Vanaf', 'hero.stat.jetskis': 'Jetski’s in de vloot', 'hero.stat.routes': 'Begeleide routes', 'hero.stat.license': 'Zonder vaarbewijs', 'hero.stat.license.value': 'Beschikbaar',
+    'exp.kicker': 'De ervaring', 'exp.title': 'De Middellandse Zee op volle snelheid', 'exp.text': 'We vertrekken uit het hart van de Baai van Roses, vijf minuten van open zee. Verborgen baaien, de kliffen van Cap de Creus en kristalhelder water wachten op je.', 'exp.f1.title': '5 minuten van zee', 'exp.f1.text': 'Basis aan de haven: in een mum van tijd scheur je door de baai.', 'exp.f2.title': 'Met of zonder vaarbewijs', 'exp.f2.text': 'Geen ervaring nodig: we begeleiden je op een route met gids.', 'exp.f3.title': 'Jetski’s van 2026', 'exp.f3.text': 'Nieuwe Sea-Doo-vloot, 90 tot 300 pk, in topconditie.', 'exp.f4.title': 'Maximale veiligheid', 'exp.f4.text': 'Briefing, vesten en professionele gids op elke route.',
+    'fleet.kicker': 'De vloot', 'fleet.title': 'Kies je machine', 'fleet.subtitle': 'Met vaarbewijs. Vier Sea-Doo’s 2026 voor elk adrenalineniveau. Benzine inbegrepen bij alle modellen behalve de RXT-X 300.', 'fleet.seats': 'plaatsen', 'fleet.units': 'st.', 'fleet.power': 'pk', 'fleet.from': 'vanaf', 'fleet.min': 'min', 'fleet.deposit': 'Borg', 'fleet.book': 'Dit model boeken', 'fleet.thrill.1': 'Plezier', 'fleet.thrill.2': 'Sport', 'fleet.thrill.3': 'Adrenaline', 'fleet.spark.tag': 'Wendbaar, speels en perfect om te beginnen met tricks.', 'fleet.gtxpro.tag': 'De ideale balans: stabiel, comfortabel en met flinke power.', 'fleet.gtx.tag': 'Meer vermogen en comfort om moeiteloos de baai te verslinden.', 'fleet.rxtx.tag': 'Het beest: 300 pk pure acceleratie voor experts.',
+    'routes.kicker': 'Begeleide routes', 'routes.title': 'Ontdek unieke plekken', 'routes.subtitle': 'Zonder vaarbewijs, met professionele gids. Benzine inbegrepen op alle routes.', 'routes.duration': 'Duur', 'routes.from': 'vanaf', 'routes.fuel': 'Benzine inbegrepen', 'routes.book': 'Route boeken', 'routes.almadrava.desc': 'Het perfecte begin: het strand van Almadrava en je eerste sensaties op zee.', 'routes.montjoi.desc': 'Op weg naar een van de mooiste baaien, tussen pijnbomen en turquoise water.', 'routes.cadaques.desc': 'Het witte dorp van Dalí vanaf zee: kliffen, vuurtorens en ansichtkaartuitzichten.', 'routes.capdecreus.desc': 'Het grote avontuur naar het oostelijkste punt van het schiereiland. Pure wilde natuur.',
+    'howto.kicker': 'Hoe het werkt', 'howto.title': 'Van de bank naar zee in 3 stappen', 'howto.s1.title': 'Boek', 'howto.s1.text': 'Stuur ons een WhatsApp of bel. Beschikbaarheid direct bevestigd.', 'howto.s2.title': 'Kom langs', 'howto.s2.text': 'Kom naar onze basis in Roses. Je krijgt de uitrusting en een veiligheidsbriefing.', 'howto.s3.title': 'Geef gas', 'howto.s3.text': 'Genieten! Alleen of met gids — de Middellandse Zee is van jou.',
+    'pricing.kicker': 'Tarieven', 'pricing.title': 'Duidelijke prijzen, geen verrassingen', 'pricing.subtitle': 'Bekijk de tarieven en boek. De borg is 100% terugbetaalbaar.', 'pricing.license': 'Met vaarbewijs', 'pricing.nolicense': 'Zonder vaarbewijs · routes', 'pricing.model': 'Model', 'pricing.route': 'Route', 'pricing.duration': 'Duur', 'pricing.low': 'Laagseizoen', 'pricing.high': 'Hoogseizoen', 'pricing.fuel': 'Benzine', 'pricing.fuel.yes': 'Inbegrepen', 'pricing.fuel.no': 'Niet inbegr.', 'pricing.deposit.license': 'Borg met vaarbewijs: € 500 (terugbetaalbaar)', 'pricing.deposit.nolicense': 'Borg zonder vaarbewijs: € 200 (terugbetaalbaar)', 'pricing.season.note': 'Laagseizoen: 01/05–31/05 & 01/09–31/10 · Hoogseizoen: 01/06–31/08',
+    'faq.kicker': 'Veelgestelde vragen', 'faq.title': 'Alles wat je moet weten', 'faq.q1': 'Heb ik een vaarbewijs nodig om een jetski te huren?', 'faq.a1': 'Niet per se. We bieden begeleide routes zonder vaarbewijs met een professionele gids. Met vaarbewijs kun je vrij varen.', 'faq.q2': 'Wat is de minimumleeftijd?', 'faq.a2': 'Om te besturen moet je meerderjarig zijn, of vanaf 16 jaar met toestemming. Passagiers mogen minderjarig zijn onder verantwoordelijkheid van een volwassene.', 'faq.q3': 'Waar zitten jullie en waar vertrekken we?', 'faq.a3': 'Onze basis: Avinguda Port Salines 41, Roses (Girona), op 5 minuten van open zee.', 'faq.q4': 'Is benzine inbegrepen?', 'faq.a4': 'Ja, benzine is inbegrepen bij alle jetski’s en tijden, behalve bij de Sea-Doo RXT-X 300. Op begeleide routes altijd inbegrepen.', 'faq.q5': 'Wat is de borg?', 'faq.a5': 'Een 100% terugbetaalbare waarborg: € 500 met vaarbewijs, € 200 op routes.', 'faq.q6': 'Hoe boek ik?', 'faq.a6': 'Het snelst online hier op de website, via WhatsApp of telefonisch.',
+    'cta.title': 'Klaar om gas te geven?', 'cta.text': 'Boek vandaag je jetski en beleef de Costa Brava vanaf zee.', 'cta.book': 'Boek via WhatsApp', 'cta.call': 'Bel nu',
+    'footer.tagline': 'Jetski-verhuur in de Baai van Roses, Costa Brava.', 'footer.explore': 'Ontdek', 'footer.contact': 'Contact', 'footer.location': 'Locatie', 'footer.follow': 'Volg ons', 'footer.rights': 'Alle rechten voorbehouden.', 'footer.legal.privacy': 'Privacy', 'footer.legal.terms': 'Voorwaarden', 'footer.legal.notice': 'Juridische kennisgeving', 'footer.legal.cookies': 'Cookies', 'footer.hours.note': 'Vraag beschikbaarheid via WhatsApp.',
+    'showcase.kicker': 'Vloot 2026', 'showcase.title': 'Van 90 tot 300 pk', 'showcase.scroll': 'Scroll verder',
+    'common.whatsapp.msg': 'Hallo, ik wil graag een jetski boeken bij Costa Brava Rent Jet Ski.', 'common.whatsapp.model': 'Hallo, ik ben geïnteresseerd in de {model}. Is er beschikbaarheid?', 'common.whatsapp.route': 'Hallo, ik ben geïnteresseerd in de route {route}. Is er beschikbaarheid?', 'lang.switch': 'Taal',
+    'book.title': 'Boek je jetski', 'book.subtitle': 'Kies een jetski of route, datum en tijd. Veilig online betalen en directe bevestiging per e-mail.', 'book.step1': '1 · Wat wil je boeken?', 'book.type.fleet': 'Jetski met vaarbewijs', 'book.type.route': 'Begeleide route · zonder vaarbewijs', 'book.step2': '2 · Datum, tijd en duur', 'book.date': 'Datum', 'book.duration': 'Duur', 'book.qty': 'Aantal jetski’s', 'book.time': 'Vertrektijd', 'book.step3': '3 · Jouw gegevens', 'book.name': 'Voor- en achternaam', 'book.email': 'E-mail', 'book.phone': 'Telefoon / WhatsApp', 'book.notes': 'Opmerkingen (optioneel)', 'book.summary': 'Overzicht', 'book.total': 'Totaal', 'book.perunit': '€ / jetski', 'book.pay': 'Betalen & boeken', 'book.paynote': '100% veilige kaartbetaling (Stripe). De borg betaal je bij de basis en krijg je terug bij inlevering.', 'book.season.title': 'Seizoenen & prijzen', 'book.season.low': 'Laagseizoen', 'book.season.high': 'Hoogseizoen', 'book.season.low.dates': '1 mei – 31 mei · 1 sept – 31 okt', 'book.season.high.dates': '1 juni – 31 augustus', 'book.season.applies': 'geldt voor jouw datum', 'book.season.closed': 'Op die datum zijn we gesloten (nov–apr). Stuur ons een WhatsApp.', 'book.slots.none': 'Geen tijden meer beschikbaar die dag. Probeer een andere datum.', 'book.slots.free': 'vrij', 'book.slots.pick': 'Kies een datum om beschikbare tijden te zien', 'book.loading': 'Beschikbaarheid controleren…', 'book.error.slot': 'Dat tijdslot is net bezet. Kies een andere tijd.', 'book.error.generic': 'Er ging iets mis. Probeer opnieuw of stuur ons een WhatsApp.', 'book.demo': 'Demomodus: betalingen zijn nog niet actief. De boeking wordt gesimuleerd zonder betaling.', 'book.fuel.yes': 'Benzine inbegrepen', 'book.fuel.no': 'Benzine niet inbegrepen',
+    'thanks.title': 'Boeking bevestigd!', 'thanks.text': 'We hebben je alle details per e-mail gestuurd. Tot snel op Avinguda Port Salines 41, Roses!', 'thanks.demo': 'Testboeking aangemaakt in demomodus (zonder betaling).', 'thanks.back': 'Terug naar home',
+    'loc.title': 'Locatie', 'loc.subtitle': 'In het hart van de Baai van Roses, 5 minuten van open zee.', 'loc.maps': 'Openen in Google Maps', 'loc.p1.title': 'Nautische basis', 'loc.p1.text': 'Avinguda Port Salines 41 · 17480 Roses (Girona), Spanje. Aan het kanaal van Santa Margarida.', 'loc.p2.title': 'Met de auto', 'loc.p2.text': '5 min. van het centrum van Roses, 10 min. van Empuriabrava via de C-68. Parkeren bij de haven.', 'loc.p3.title': 'Vertrekpunt', 'loc.p3.text': 'Via het kanaal direct de zee op: binnen 5 minuten vaar je door de baai.',
+    'contact.title': 'Contact', 'contact.subtitle': 'Vragen, groepen, evenementen? Schrijf ons en we reageren snel.', 'contact.direct': 'Direct contact', 'contact.form.name': 'Naam', 'contact.form.email': 'E-mail', 'contact.form.message': 'Bericht', 'contact.form.send': 'Bericht versturen', 'contact.form.sending': 'Versturen…', 'contact.form.sent': 'Bericht verstuurd! We reageren heel snel.', 'contact.form.error': 'Versturen mislukt. Probeer WhatsApp of bel ons.',
+    'time.gift': 'gratis', 'credits.web': 'Website door', 'credits.sys': 'Systeem ontwikkeld door',
   },
 } as const;
 
