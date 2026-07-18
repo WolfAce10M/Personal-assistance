@@ -11,10 +11,10 @@ export const CLOSE_MIN = 20 * 60;
 export const SLOT_STEP_MIN = 30;
 /** Margen entre alquileres (repostaje / entrega) que bloquea la moto */
 export const BUFFER_MIN = 20;
-/** Nº de motos disponibles para rutas guiadas por salida */
-export const ROUTE_CAPACITY = 6;
-/** Máximo de motos por reserva */
-export const MAX_QTY = 4;
+/** Nº de motos disponibles para rutas guiadas por salida (toda la flota) */
+export const ROUTE_CAPACITY = 11;
+/** Máximo de motos por reserva (el tope real lo marca el nº de unidades de cada modelo) */
+export const MAX_QTY = 11;
 /** Minutos que se retiene el hueco mientras el cliente paga */
 export const HOLD_MINUTES = 30;
 /** Con cuántos días de antelación se puede reservar */

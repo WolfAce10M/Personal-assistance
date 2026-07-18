@@ -80,20 +80,31 @@ export function quote(input: {
   };
 }
 
-/** Reservas activas de un artículo en un día (para pintar disponibilidad). */
+/** Reservas activas de un artículo en un día (para pintar disponibilidad).
+ *  Resiliente: si la lectura de la BD falla, devolvemos [] (huecos libres) para
+ *  no bloquear la selección de hora. La reserva final sigue protegida por el
+ *  bloqueo atómico de create_booking, así que nunca hay sobreventa. */
 export async function activeBookings(itemId: string, day: string) {
   if (!hasDb()) return []; // modo demo: todo libre
-  const { data, error } = await db()
-    .from('bookings')
-    .select('start_min,end_min,qty,status,expires_at')
-    .eq('item_id', itemId)
-    .eq('day', day)
-    .in('status', ['confirmed', 'pending']);
-  if (error) throw new Error('DB: ' + error.message);
-  const now = Date.now();
-  return (data ?? []).filter(
-    (b) => b.status === 'confirmed' || (b.expires_at && Date.parse(b.expires_at) > now)
-  );
+  try {
+    const { data, error } = await db()
+      .from('bookings')
+      .select('start_min,end_min,qty,status,expires_at')
+      .eq('item_id', itemId)
+      .eq('day', day)
+      .in('status', ['confirmed', 'pending']);
+    if (error) {
+      console.error('availability DB read failed:', error.message);
+      return [];
+    }
+    const now = Date.now();
+    return (data ?? []).filter(
+      (b) => b.status === 'confirmed' || (b.expires_at && Date.parse(b.expires_at) > now)
+    );
+  } catch (e) {
+    console.error('availability DB exception:', e);
+    return [];
+  }
 }
 
 /** Huecos con su disponibilidad restante. */
@@ -152,6 +163,25 @@ export async function getBooking(id: string) {
   if (!hasDb()) return null;
   const { data } = await db().from('bookings').select('*').eq('id', id).single();
   return data;
+}
+
+/** Lista de reservas para el panel de administración (más recientes primero). */
+export async function listBookings(opts: { from?: string; status?: string } = {}) {
+  if (!hasDb()) return [];
+  let q = db()
+    .from('bookings')
+    .select('*')
+    .order('day', { ascending: true })
+    .order('start_min', { ascending: true })
+    .limit(500);
+  if (opts.from) q = q.gte('day', opts.from);
+  if (opts.status && opts.status !== 'all') q = q.eq('status', opts.status);
+  const { data, error } = await q;
+  if (error) {
+    console.error('listBookings failed:', error.message);
+    return [];
+  }
+  return data ?? [];
 }
 
 /* ------------------------------------------------------------------ */
