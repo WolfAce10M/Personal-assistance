@@ -15,8 +15,9 @@ export const BUFFER_MIN = 20;
 export const ROUTE_CAPACITY = 11;
 /** Máximo de motos por reserva (el tope real lo marca el nº de unidades de cada modelo) */
 export const MAX_QTY = 11;
-/** Minutos que se retiene el hueco mientras el cliente paga */
-export const HOLD_MINUTES = 30;
+/** Minutos que se retiene el hueco mientras el cliente paga
+ *  (mayor que la caducidad del pago en Stripe, 35 min, para no liberar antes) */
+export const HOLD_MINUTES = 40;
 /** Con cuántos días de antelación se puede reservar */
 export const MAX_DAYS_AHEAD = 120;
 

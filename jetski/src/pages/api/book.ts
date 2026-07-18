@@ -89,7 +89,9 @@ export const POST: APIRoute = async ({ request }) => {
       metadata: { booking_id: bookingId, locale },
       success_url: `${SITE_URL}${base(locale)}/reservas/gracias?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}${base(locale)}/reservas?cancelled=1`,
-      expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 min como la retención
+      // Stripe exige un mínimo de 30 min; damos margen (35 min) para que el
+      // retardo de red no lo deje por debajo del mínimo y rechace el pago.
+      expires_at: Math.floor(Date.now() / 1000) + 35 * 60,
     });
 
     return json({ redirect: session.url });
