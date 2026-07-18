@@ -4,7 +4,7 @@
  */
 type Option = { minutes: number; low: number; high: number; fuelIncluded: boolean };
 type Item = { type: 'fleet' | 'route'; id: string; name: string; capacity: number; options: Option[] };
-type Boot = { locale: string; maxQty: number; items: Item[]; s: Record<string, string> };
+type Boot = { locale: string; maxQty: number; depositPerUnit: number; items: Item[]; s: Record<string, string> };
 
 const boot: Boot = JSON.parse(document.getElementById('booking-data')!.textContent!);
 const S = boot.s;
@@ -161,7 +161,14 @@ function renderSummary() {
         `<div class="flex justify-between gap-3"><dt class="text-white/45">${k}</dt><dd class="text-right font-medium">${v}</dd></div>`
     )
     .join('');
-  $('[data-total]').textContent = unit && state.startMin >= 0 ? `${unit * state.qty}€` : '—';
+
+  const ready = Boolean(unit && state.startMin >= 0);
+  const total = ready ? (unit as number) * state.qty : 0;
+  const deposit = ready ? boot.depositPerUnit * state.qty : 0;
+  const remaining = Math.max(0, total - deposit);
+  $('[data-activitytotal]').textContent = ready ? `${total}€` : '—';
+  $('[data-remaining]').textContent = ready ? `${remaining}€` : '—';
+  $('[data-total]').textContent = ready ? `${deposit}€` : '—';
   paidBtn.disabled = !(state.day && state.season && state.startMin >= 0);
 }
 
@@ -247,7 +254,8 @@ paidBtn.addEventListener('click', async () => {
       showMsg(S.errSlot);
       refreshSlots();
     } else {
-      showMsg(S.errGeneric);
+      // Mostramos el detalle real (si viene) para poder diagnosticar el fallo.
+      showMsg(data.detail ? `${S.errGeneric} (${data.detail})` : S.errGeneric);
     }
   } catch {
     showMsg(S.errGeneric);

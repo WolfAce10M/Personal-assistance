@@ -10,7 +10,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { quote, createPending, setStatus, sendConfirmationEmails } from '../../lib/bookings';
 import { hasStripe, stripe, SITE_URL } from '../../lib/server';
-import { fmtTime } from '../../data/booking';
+import { fmtTime, DEPOSIT_PER_UNIT } from '../../data/booking';
 
 export const POST: APIRoute = async ({ request }) => {
   let body: Record<string, unknown>;
@@ -47,12 +47,18 @@ export const POST: APIRoute = async ({ request }) => {
     if ('error' in created) return json({ error: created.error }, 409);
     const bookingId = created.id;
 
+    // Depósito online (10€/moto) y resto a pagar en la base
+    const deposit = DEPOSIT_PER_UNIT * q.qty;
+    const remaining = Math.max(0, q.total - deposit);
+
     const summary = {
       item: q.itemName,
       day: q.day,
       time: fmtTime(q.startMin),
       qty: q.qty,
       total: q.total,
+      deposit,
+      remaining,
       season: q.season,
       name,
       email,
@@ -68,7 +74,7 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ redirect: `${base(locale)}/reservas/gracias?demo=1&id=${bookingId}` });
     }
 
-    // Stripe Checkout — el pago confirma la reserva vía webhook.
+    // Stripe Checkout — SOLO se cobra el depósito (10€/moto). El resto en la base.
     const session = await stripe().checkout.sessions.create({
       mode: 'payment',
       customer_email: email,
@@ -78,15 +84,21 @@ export const POST: APIRoute = async ({ request }) => {
           quantity: q.qty,
           price_data: {
             currency: 'eur',
-            unit_amount: Math.round(q.unitPrice * 100),
+            unit_amount: DEPOSIT_PER_UNIT * 100, // 10€ por moto
             product_data: {
-              name: q.itemName,
-              description: `${q.day} · ${fmtTime(q.startMin)} · ${q.minutes} min`,
+              name: `Depósito reserva · ${q.itemName}`,
+              description: `${q.day} · ${fmtTime(q.startMin)} · ${q.minutes} min · Resto (${remaining}€) se paga en la base`,
             },
           },
         },
       ],
-      metadata: { booking_id: bookingId, locale },
+      metadata: {
+        booking_id: bookingId,
+        locale,
+        total: String(q.total),
+        deposit: String(deposit),
+        remaining: String(remaining),
+      },
       success_url: `${SITE_URL}${base(locale)}/reservas/gracias?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}${base(locale)}/reservas?cancelled=1`,
       // Stripe exige un mínimo de 30 min; damos margen (35 min) para que el
@@ -96,8 +108,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     return json({ redirect: session.url });
   } catch (e) {
-    console.error(e);
-    return json({ error: 'SERVER_ERROR' }, 500);
+    // Devolvemos el detalle para poder diagnosticar (es la web del propietario).
+    const detail = e instanceof Error ? e.message : String(e);
+    console.error('Stripe/book error:', detail);
+    return json({ error: 'SERVER_ERROR', detail }, 500);
   }
 };
 

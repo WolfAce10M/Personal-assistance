@@ -12,6 +12,7 @@ import {
   HOLD_MINUTES,
   MAX_DAYS_AHEAD,
   MAX_QTY,
+  DEPOSIT_PER_UNIT,
   type Season,
 } from '../data/booking';
 import { db, hasDb, sendEmail, NOTIFY_EMAIL, SITE_URL } from './server';
@@ -244,8 +245,22 @@ const M: Record<string, Record<string, string>> = {
   },
 };
 
+const M2: Record<string, { activity: string; paid: string; rest: string }> = {
+  es: { activity: 'Total actividad', paid: 'Pagado ahora (depósito)', rest: 'Resto en la base' },
+  ca: { activity: 'Total activitat', paid: 'Pagat ara (dipòsit)', rest: 'Resta a la base' },
+  fr: { activity: 'Total activité', paid: 'Payé (acompte)', rest: 'Reste à la base' },
+  de: { activity: 'Gesamt Aktivität', paid: 'Bezahlt (Anzahlung)', rest: 'Rest an der Basis' },
+  nl: { activity: 'Totaal activiteit', paid: 'Betaald (aanbetaling)', rest: 'Rest bij de basis' },
+  en: { activity: 'Activity total', paid: 'Paid now (deposit)', rest: 'Rest at the base' },
+};
+
 function bookingHtml(b: Record<string, string | number>, locale: string) {
   const t = M[locale] ?? M.es;
+  const t2 = M2[locale] ?? M2.es;
+  const qty = Number(b.qty) || 1;
+  const total = Number(b.total) || 0;
+  const deposit = DEPOSIT_PER_UNIT * qty;
+  const remaining = Math.max(0, total - deposit);
   const row = (k: string, v: string | number) =>
     `<tr><td style="padding:6px 16px 6px 0;color:#666">${k}</td><td style="padding:6px 0;font-weight:600">${v}</td></tr>`;
   return `
@@ -262,7 +277,9 @@ function bookingHtml(b: Record<string, string | number>, locale: string) {
       ${row(t.time, String(b.time))}
       ${row(t.qty, String(b.qty))}
       ${row('—', b.season === 'low' ? t.season_low : t.season_high)}
-      ${row(t.total, `${b.total} €`)}
+      ${row(t2.activity, `${total} €`)}
+      ${row(t2.paid, `<span style="color:#0a8a0a">${deposit} €</span>`)}
+      ${row(t2.rest, `${remaining} €`)}
     </table>
     <p style="margin:18px 0 6px;color:#444">${t.bring}</p>
     <p style="color:#888;font-size:13px">WhatsApp: +34 675 363 023 · ${SITE_URL}</p>

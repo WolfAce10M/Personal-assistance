@@ -15,6 +15,8 @@ export const BUFFER_MIN = 20;
 export const ROUTE_CAPACITY = 11;
 /** Máximo de motos por reserva (el tope real lo marca el nº de unidades de cada modelo) */
 export const MAX_QTY = 11;
+/** Depósito que se cobra ONLINE por moto al reservar. El resto se paga en la base. */
+export const DEPOSIT_PER_UNIT = 10;
 /** Minutos que se retiene el hueco mientras el cliente paga
  *  (mayor que la caducidad del pago en Stripe, 35 min, para no liberar antes) */
 export const HOLD_MINUTES = 40;

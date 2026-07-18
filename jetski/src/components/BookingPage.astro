@@ -11,7 +11,7 @@ import Header from './layout/Header.astro';
 import Footer from './layout/Footer.astro';
 import Icon from './ui/Icon.astro';
 import { useTranslations, type Lang } from '../i18n/utils';
-import { getBookableItems, MAX_QTY } from '../data/booking';
+import { getBookableItems, MAX_QTY, DEPOSIT_PER_UNIT } from '../data/booking';
 import type { UIKey } from '../i18n/ui';
 
 interface Props {
@@ -39,6 +39,7 @@ const descriptions: Record<Lang, string> = {
 const bootData = {
   locale: lang,
   maxQty: MAX_QTY,
+  depositPerUnit: DEPOSIT_PER_UNIT,
   items: items.map((i) => ({
     type: i.type,
     id: i.id,
@@ -67,6 +68,9 @@ const bootData = {
     fuelYes: t('book.fuel.yes'),
     fuelNo: t('book.fuel.no'),
     demo: t('book.demo'),
+    paynow: t('book.paynow'),
+    remaining: t('book.remaining'),
+    activitytotal: t('book.activitytotal'),
   },
 };
 ---
@@ -200,9 +204,19 @@ const bootData = {
         <aside class="lg:sticky lg:top-24 rounded-3xl border border-white/10 bg-ink-850/70 p-6">
           <h2 class="text-lg font-bold text-white">{t('book.summary')}</h2>
           <dl data-summary class="mt-4 space-y-2.5 text-sm text-white/75"></dl>
-          <div class="mt-5 pt-4 border-t border-white/10 flex items-baseline justify-between">
-            <span class="text-sm uppercase tracking-wider text-white/50">{t('book.total')}</span>
-            <span data-total class="text-3xl font-display font-black text-white">—</span>
+          <div class="mt-5 pt-4 border-t border-white/10 space-y-2">
+            <div class="flex items-baseline justify-between text-sm text-white/60">
+              <span>{t('book.activitytotal')}</span>
+              <span data-activitytotal>—</span>
+            </div>
+            <div class="flex items-baseline justify-between text-sm text-white/60">
+              <span>{t('book.remaining')}</span>
+              <span data-remaining>—</span>
+            </div>
+            <div class="flex items-baseline justify-between pt-2 border-t border-white/10">
+              <span class="text-sm font-semibold uppercase tracking-wider text-brand-orange">{t('book.paynow')}</span>
+              <span data-total class="text-3xl font-display font-black text-white">—</span>
+            </div>
           </div>
           <button
             data-pay
